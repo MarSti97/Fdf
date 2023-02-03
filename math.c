@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fdf.h                                              :+:      :+:    :+:   */
+/*   math.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/03 16:18:16 by mstiedl          ###   ########.fr       */
+/*   Created: 2023/02/03 15:25:49 by mstiedl           #+#    #+#             */
+/*   Updated: 2023/02/03 15:27:29 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FDF_H
-# define FDF_H
+#include <math.h>
 
-# include <unistd.h>
-# include <stdlib.h>
-# include <stdio.h>
-
-typedef struct	s_img
+int	pythag(int a, int b)
 {
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
-}				t_img;
+	double c;
+	
+	a *= a;
+	b *= b;
+	c = a + b;
+	c = sqrt(c);
+	return (c);
+}
 
-struct	s_coordinate
+int main()
 {
-	int	x_start;
-	int	y_start;
-	int	x_end;
-	int	y_end;
-	int z;
-}		coord;
+	int diag;
 
-#endif
+	diag = pythag(15, 15);
+}

@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/03 16:18:16 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/05 09:21:44 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,17 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+
+typedef struct	s_map
+{
+	struct s_map	*next;
+	struct s_map	*down;
+	int				row;
+	int				col;
+	int				x;
+	int				y;
+	int				z;
+}				t_map;
 
 typedef struct	s_img
 {

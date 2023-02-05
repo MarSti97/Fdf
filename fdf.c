@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/03 17:27:32 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/05 19:16:30 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,19 +73,19 @@ void	bresenham_line(t_img *img)
 	}	
 }
 
-void	make_grid(t_img *img, int x_points, int y_points, int x_win, int y_win)
+void	make_grid(t_img *img, int x_points, int y_points)
 {
-	int	x_len = 640 - 10;
-	int	y_len = 360 - 10;
-	int x = x_len / x_points;
-	int	y = y_len / y_points;
+	// int	x_len = 640 - 10;
+	// int	y_len = 360 - 10;
+	// int x = x_len / x_points;
+	// int	y = y_len / y_points;
 	int	counter = 0;
 	while (counter != (x_points + y_points))
 	{
-		coord.x_start = x_len;
-		coord.y_start = y_len;
-		coord.x_end = ;
-		coord.y_end = 34;
+		coord.x_start = 20;
+		coord.y_start = 20;
+		coord.x_end = 100;
+		coord.y_end = 100;
 		bresenham_line(img);	
 	}
 }
@@ -97,8 +97,8 @@ int	main()
 	t_img	img;
 	
 	mlx = mlx_init();
-	win = mlx_new_window(mlx, 640, 360, "Lets make shit");
-	img.img = mlx_new_image(mlx, 640, 360);
+	win = mlx_new_window(mlx, 1080, 640, "Lets make shit");
+	img.img = mlx_new_image(mlx, 1080, 640);
 	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
 	
 	make_grid(&img, 8, 8);

@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:33:39 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/05 19:19:53 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/05 19:25:41 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ void    add_data(t_map **map, char **data)
 void    map_dimentions(t_map **map)
 {
     t_map *last;
+    int ratio_x;
+    int ratio_y;
 
     last = ft_lstlast(map);
-    map->row
-    map->col
+    ratio_x = 1080 / map->row;
+    ratio_y = 640 / map->col;
 }

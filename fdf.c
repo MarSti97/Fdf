@@ -6,28 +6,12 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/05 19:16:30 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/06 15:18:16 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include "fdf.h"
-
-/* int	main(int ac, char **av)
-{
-	int fd;
-	char *str;
-
-	if (ac == 2)
-	{
-		check_arg(av[1]);
-		fd = open(av[1], O_RDONLY);
-		str = get_next_line(fd);
-		// make array of ints with atoi 
-	}
-	else
-		return(0);
-} */
 
 int close()
 {
@@ -43,7 +27,7 @@ void	pixel_put(t_img *img, int x, int y, int colour)
 	*(unsigned int*)dst = colour;
 }
 
-void	bresenham_line(t_img *img)
+void	bresenham_line(t_img *img, struct coordinates coord)
 {
 	int	d;
 	int	x;
@@ -73,40 +57,62 @@ void	bresenham_line(t_img *img)
 	}	
 }
 
-void	make_grid(t_img *img, int x_points, int y_points)
+void	draw_map(t_map **map, t_img *img)
 {
-	// int	x_len = 640 - 10;
-	// int	y_len = 360 - 10;
-	// int x = x_len / x_points;
-	// int	y = y_len / y_points;
-	int	counter = 0;
-	while (counter != (x_points + y_points))
+	t_map *temp;
+	struct coordinates	coord;
+
+	temp = (*map)->down;
+	while ((*map)->next && (*map)->down)
 	{
-		coord.x_start = 20;
-		coord.y_start = 20;
-		coord.x_end = 100;
-		coord.y_end = 100;
-		bresenham_line(img);	
+		coord.x_start = (*map)->x;
+		coord.y_start = (*map)->y;
+		coord.x_end = (*map)->next->x;
+		coord.y_end = (*map)->next->y;
+		bresenham_line(img, coord);
+		if ((*map)->down)
+		{
+			coord.x_end = (*map)->down->x;
+			coord.y_end = (*map)->down->y;
+			bresenham_line(img, coord);
+		}
+		if ((*map)->next)
+			*map = (*map)->next;
+		else if ((*map)->down)
+		{
+			*map = temp;
+			temp = temp->down;
+		}
 	}
 }
 
-int	main()
+int	main(int ac, char **av)
 {
-	void *mlx;
-	void *win;
+	int fd;
+	// void *mlx;
+	// void *win;
 	t_img	img;
-	
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, 1080, 640, "Lets make shit");
-	img.img = mlx_new_image(mlx, 1080, 640);
-	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
-	
-	make_grid(&img, 8, 8);
-	// draw_line(&img, 100, 100);
-	mlx_put_image_to_window(mlx, win, img.img, 0, 0);
-	mlx_hook(win, 17, 1L<<2, close, &mlx);
-	mlx_loop(mlx);
-	// void *image = mlx_new_image(mlx, 640, 360);
+	t_map   *map;
+    
+    map = NULL;
+	if (ac == 2)
+	{
+		// mlx = mlx_init();
+		// win = mlx_new_window(mlx, 1080, 640, "Lets make shit");
+		// img.img = mlx_new_image(mlx, 1080, 640);
+		// img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
+		
+		fd = open(av[1], O_RDONLY);
+		make_map(&map, fd);
+		draw_map(&map, &img);
+		// draw_line(&img, 100, 100);
+		// mlx_put_image_to_window(mlx, win, img.img, 0, 0);
+		// mlx_hook(win, 17, 1L<<2, close, &mlx);
+		// mlx_loop(mlx);
+		// void *image = mlx_new_image(mlx, 640, 360);
+	}
+	else
+		return(0);
 }
 
 // make predefined margins later

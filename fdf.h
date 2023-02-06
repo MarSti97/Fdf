@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/05 09:21:44 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/06 15:25:38 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,18 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <fcntl.h>
+# include "./libft/libft.h"
 
 typedef struct	s_map
 {
-	struct s_map	*next;
-	struct s_map	*down;
 	int				row;
 	int				col;
 	int				x;
 	int				y;
 	int				z;
+	struct s_map	*next;
+	struct s_map	*down;
 }				t_map;
 
 typedef struct	s_img
@@ -37,13 +39,35 @@ typedef struct	s_img
 	int		endian;
 }				t_img;
 
-struct	s_coordinate
+struct	coordinates
 {
 	int	x_start;
 	int	y_start;
 	int	x_end;
 	int	y_end;
 	int z;
-}		coord;
+};
+
+typedef struct	dimensions
+{
+	int	cmax;
+	int	rmax;
+	int	rx;
+	int	ry;
+	int cntrx;
+	int cntry;
+}				t_dim;
+
+// fdf
+// list_funcs
+void	ft_listadd_back(t_map **lst, t_map *new);
+void	error(t_map *lst);
+t_map	*ft_listlast(t_map *lst);
+// map.c
+void    make_map(t_map **map, int fd);
+void    add_data(t_map **map, char **data);
+t_dim    get_dimensions(t_map **map);
+void	linked_grid(t_map **map);
+void	give_coords(t_map **map, t_dim dim);
 
 #endif

@@ -1,4 +1,4 @@
-SRC = fdf.c
+SRC = fdf.c list_funcs.c map.c ./libft/libft.a 
 OBJ = $(SRC:.c=.o)
 NAME = fdf
 FLAGS = -Wall -Werror -Wextra -g
@@ -17,16 +17,16 @@ all : $(NAME)
 	@$(CC) $(FLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
 $(NAME): $(OBJ)
-	@$(CC) $(OBJ) -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -o $(NAME)
-	@echo "$(GREEN)---- Compiled ----$(END)"
+	@$(CC) $(OBJ) -Lmlx_linux -lmlx_Linux -L/usr/lib  -Imlx_linux -lXext -lX11 -lm -lz -g -o $(NAME)
+	@echo "$(GREEN)>>>> Compiled <<<<$(END)"
 
 clean :
 	@$(RM) $(OBJ)
-	@echo "$(RED)---- Cleaned ----$(END)"
+	@echo "$(RED)>>>> Cleaned <<<<$(END)"
 
 fclean : clean 
 	@$(RM) $(NAME)
-	@echo "$(RED)---- All ----$(END)"
+	@echo "$(RED)>>>> All <<<<$(END)"
 
 re : fclean all
 

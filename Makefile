@@ -1,4 +1,4 @@
-SRC = fdf.c list_funcs.c map.c ./libft/libft.a 
+SRC = fdf.c list_funcs.c map.c rotate.c ./libft/libft.a 
 OBJ = $(SRC:.c=.o)
 NAME = fdf
 FLAGS = -Wall -Werror -Wextra -g
@@ -30,4 +30,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all fclean clean re
+.PHONY : all fclean clean re make

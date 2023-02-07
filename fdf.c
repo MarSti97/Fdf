@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/06 15:18:16 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/07 17:18:51 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	pixel_put(t_img *img, int x, int y, int colour)
 	*(unsigned int*)dst = colour;
 }
 
-void	bresenham_line(t_img *img, struct coordinates coord)
+void	bresenham_line(t_img *img, t_map *start, t_map *end)
 {
 	int	d;
 	int	x;
@@ -35,52 +35,49 @@ void	bresenham_line(t_img *img, struct coordinates coord)
 	int dx;
 	int	dy;
 
-	dx = coord.x_end - coord.x_start;
-	dy = coord.y_end - coord.y_start;
-	x = coord.x_start;
-	y = coord.y_start;
+	dx = end->x - start->x;
+	dy = end->y - start->y;
+	x = start->x;
+	y = start->y;
 	d = 2 * (dy - dx);
-	while(x < coord.x_end)
+	while(x < end->x)
 	{
 		if (d >= 0)
 		{
-			pixel_put(img, x, y, 0x00FF0000);
+			pixel_put(img, x, y, 0x009900FF);
 			y++;
 			d = d + 2 * dy - 2 * dx;
 		}
 		else
 		{
-			pixel_put(img, x, y, 0x00FF0000);
+			pixel_put(img, x, y, 0x009900FF);
 			d = d + 2 * dy;	
 		}
 		x++;
-	}	
+	}
+	while (y < end->y)
+		pixel_put(img, x, y++, 0x009900FF);
 }
 
-void	draw_map(t_map **map, t_img *img)
+void	draw_map(t_map *map, t_img *img)
 {
 	t_map *temp;
-	struct coordinates	coord;
+	// struct coordinates	coord;
 
-	temp = (*map)->down;
-	while ((*map)->next && (*map)->down)
+	temp = map->down;
+	while (map->next || map->down)
 	{
-		coord.x_start = (*map)->x;
-		coord.y_start = (*map)->y;
-		coord.x_end = (*map)->next->x;
-		coord.y_end = (*map)->next->y;
-		bresenham_line(img, coord);
-		if ((*map)->down)
+		if (map->next)
+			bresenham_line(img, map, map->next);
+		if (map->down)
 		{
-			coord.x_end = (*map)->down->x;
-			coord.y_end = (*map)->down->y;
-			bresenham_line(img, coord);
+			bresenham_line(img, map, map->down);
 		}
-		if ((*map)->next)
-			*map = (*map)->next;
-		else if ((*map)->down)
+		if (map->next)
+			map = map->next;
+		else if (map->down)
 		{
-			*map = temp;
+			map = temp;
 			temp = temp->down;
 		}
 	}
@@ -89,27 +86,26 @@ void	draw_map(t_map **map, t_img *img)
 int	main(int ac, char **av)
 {
 	int fd;
-	// void *mlx;
-	// void *win;
+	void *mlx;
+	void *win;
 	t_img	img;
 	t_map   *map;
     
     map = NULL;
 	if (ac == 2)
 	{
-		// mlx = mlx_init();
-		// win = mlx_new_window(mlx, 1080, 640, "Lets make shit");
-		// img.img = mlx_new_image(mlx, 1080, 640);
-		// img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
+		mlx = mlx_init();
+		win = mlx_new_window(mlx, WIDTH, HEIGHT, "Lets make shit");
+		img.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+		img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
 		
 		fd = open(av[1], O_RDONLY);
 		make_map(&map, fd);
-		draw_map(&map, &img);
-		// draw_line(&img, 100, 100);
-		// mlx_put_image_to_window(mlx, win, img.img, 0, 0);
-		// mlx_hook(win, 17, 1L<<2, close, &mlx);
-		// mlx_loop(mlx);
-		// void *image = mlx_new_image(mlx, 640, 360);
+		draw_circle(&img);
+		// draw_map(map, &img);
+		mlx_put_image_to_window(mlx, win, img.img, 0, 0);
+		mlx_hook(win, 17, 1L<<2, close, &mlx);
+		mlx_loop(mlx);
 	}
 	else
 		return(0);

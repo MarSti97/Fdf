@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:12:46 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/06 13:10:21 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/07 09:46:53 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ void	ft_listadd_back(t_map **lst, t_map *new)
 		*lst = new;
 		return ;
 	}
-	temp = *lst;
-	while (temp->next)
-		temp = temp->next;
+	temp = ft_listlast(*lst);
 	temp->next = new;
 	// new->prev = temp;
 }

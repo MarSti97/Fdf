@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:33:39 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/06 15:37:35 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/07 16:42:12 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,36 +29,44 @@ void    make_map(t_map **map, int fd)
 		free (line);
     }
 	dim = get_dimensions(map);
-	test_grid(*map);
-	linked_grid(map);
-	give_coords(map, dim);
+	linked_grid(*map);
+	give_coords(*map, dim);
+	// test_grid(*map);
 }
 
 void	test_grid(t_map *map)
 {
-	int i = 0;
-	
-	ft_printf("Node %i: %i", i++, map->z);
-	ft_printf("Node %i: %i", i++, map->z);
-	ft_printf("Node %i: %i", i++, map->z);
-	ft_printf("Node %i: %i", i++, map->z);
-	ft_printf("Node %i: %i", i++, map->z);
+	// t_map *temp = map;
+	while (map)
+	{
+		ft_printf("Node: row:%i, col:%i x:%i y:%i  -> ", map->row, map->col, map->x, map->y);
+		ft_printf("Node: row:%i, col:%i x:%i y:%i  -> ", map->next->row, map->next->col, map->next->x, map->next->y);
+		ft_printf("Node: row:%i, col:%i x:%i y:%i  -> ", map->next->next->row, map->next->next->col, map->next->next->x, map->next->next->y);
+		ft_printf("\n----\n");
+		map = map->down;
+	}
+	// ft_printf("\n");
+	// while (temp)
+	// {
+	// 	ft_printf("Node %i: z:%i row:%i, col:%i  ->  ", i++, temp->down->z, temp->down->row, temp->down->col);
+	// 	temp = temp->next;
+	// }
 }
 
-void	linked_grid(t_map **map)
+void	linked_grid(t_map *map)
 {
 	t_map *new_line;
 	t_map *temp;
 	
-	new_line = *map;
+	new_line = map;
 	while (new_line->row == new_line->next->row)
 		new_line = new_line->next;
 	new_line = new_line->next;
 	while (new_line)
 	{
-		(*map)->down = new_line;
-		temp = *map;
-		*map = (*map)->next;
+		map->down = new_line;
+		temp = map;
+		map = map->next;
 		new_line = new_line->next;
 		if (temp->row != temp->next->row)
 			temp->next = NULL;
@@ -92,7 +100,7 @@ void    add_data(t_map **map, char **data)
     }
 }
 
-void	give_coords(t_map **map, t_dim dim)
+void	give_coords(t_map *map, t_dim dim)
 {
 	t_map *temp;
 	int x;
@@ -104,17 +112,17 @@ void	give_coords(t_map **map, t_dim dim)
 	// ft_printf("%i%i%i", cntrx, rx, cmax);
 
 	y = 0;
-	while (*map)
+	while (map)
 	{
 		x = 0;
-		temp = (*map)->down;
-		while(*map)
+		temp = map->down;
+		while(map)
 		{
-			(*map)->x = dim.cntrx - (dim.rx * (dim.cmax / 2)) + (dim.rx * x++);
-			(*map)->y = dim.cntry - (dim.ry * (dim.rmax / 2)) + (dim.ry * y);
-			*map = (*map)->next;
+			map->x = dim.cntrx - (dim.rx * (dim.cmax / 2)) + (dim.rx * x++);
+			map->y = dim.cntry - (dim.ry * (dim.rmax / 2)) + (dim.ry * y);
+			map = map->next;
 		}
-		*map = temp;
+		map = temp;
 		y++;
 	}
 }
@@ -127,9 +135,9 @@ t_dim   get_dimensions(t_map **map)
     last = ft_listlast(*map);
 	dim.cmax = last->col;
 	dim.rmax = last->row;
-    dim.rx = 600 / dim.rmax;
-    dim.ry = (dim.rx / 3) * 2;
-	dim.cntrx = 1080 / 2;
-	dim.cntry = 640 / 2;
+    dim.rx = 35;
+    dim.ry = (dim.rx / 5) * 4;
+	dim.cntrx = WIDTH / 2;
+	dim.cntry = HEIGHT / 2;
 	return (dim);
 }

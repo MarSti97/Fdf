@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:12:46 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/07 09:46:53 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/08 15:55:53 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	error(t_map *lst)
 
 	if (lst)
 	{
-		write(1, "Memory error\n", 13);
+		// write(1, "Memory error\n", 13);
 		while (lst != NULL)
 		{
 			temp = lst;

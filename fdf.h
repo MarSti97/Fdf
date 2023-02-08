@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/07 17:17:01 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/08 21:10:17 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,16 @@ struct	coordinates
 	int	y_end;
 };
 
+struct line
+{
+	int	x;
+	int	y;
+	int dx;
+	int	dy;
+	int endx;
+	int endy;
+};
+
 typedef struct	dimensions
 {
 	int	cmax;
@@ -78,7 +88,10 @@ t_dim    get_dimensions(t_map **map);
 void	linked_grid(t_map *map);
 void	give_coords(t_map *map, t_dim dim);
 // rotate.c
-void	draw_circle(t_img *img);
+void	rotate_coord(t_map *map, int degree);
 void	pixel_put(t_img *img, int x, int y, int colour);
 int	get_radius(int x, int y);
+void	test_rotating(t_img *img);
+// third_dim.c
+void    add_dimention(t_map *map);
 #endif

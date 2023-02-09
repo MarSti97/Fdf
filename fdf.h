@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/08 21:10:17 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/09 13:41:40 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct	dimensions
 	int	rmax;
 	int	rx;
 	int	ry;
+	int	rz;
 	int cntrx;
 	int cntry;
 }				t_dim;
@@ -90,8 +91,10 @@ void	give_coords(t_map *map, t_dim dim);
 // rotate.c
 void	rotate_coord(t_map *map, int degree);
 void	pixel_put(t_img *img, int x, int y, int colour);
-int	get_radius(int x, int y);
-void	test_rotating(t_img *img);
+int		get_radius(int x, int y);
+void ft_drawcircle2(t_img *img, int color);
+// void	test_rotating(t_img *img);
 // third_dim.c
-void    add_dimention(t_map *map);
+void    add_dimention(t_map *map, int ratio);
+int 	add_colour(t_map *map, int arg);
 #endif

@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 11:59:34 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/08 20:56:19 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/09 14:02:30 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	get_radius(int x, int y)
 	return (sqrt(radius));
 }
 
-int	which_quadrent(int x, int y, int i)
+double	which_quadrent(int x, int y, double i)
 {
 	if ((x > WIDTH / 2) && (y > HEIGHT / 2))
 		return (i);
@@ -43,10 +43,10 @@ int	which_quadrent(int x, int y, int i)
 	return (0);
 }
 
-int	find_start_angle(int x, int y, int hypot)
+double	find_start_angle(int x, int y, int hypot)
 {
 	double PI = 3.1415926535;
-	int degree;
+	double degree;
 	int opposite;
 	double sin;
 	
@@ -54,27 +54,57 @@ int	find_start_angle(int x, int y, int hypot)
 		opposite = (HEIGHT / 2) - y;
 	else
 		opposite = y - (HEIGHT / 2);
-	// ft_printf("opposite: %i\n", opposite);
 	sin = (double)opposite / (double)hypot;
-	// printf("sin: %f\n", sin);
-	degree = asin(sin) * 180/PI;
-	// printf("degree: %f\n", degree);
+	degree = asin(sin) * 180 / PI;
 	degree = which_quadrent(x, y, degree);
 	return (degree);
 }
 
 void	rotate_coord(t_map *map, int degree)
 {
-	double PI = 3.1415926535;
+	double PI;
 	int	i;
-	int r;
+	int	r;
 	
+	PI = 3.1415926535;
 	r = get_radius(map->x, map->y);
 	i = find_start_angle(map->x, map->y, r);
 	map->x = (WIDTH / 2) + (r * cos((i + degree) * PI / 180));
 	map->y = (HEIGHT / 2) + (r * sin((i + degree) * PI / 180));
 	// pixel_put(img, ((WIDTH / 2) + x), ((HEIGHT / 2) + y), 0x009900FF);
 	// try use when making grid
+}
+
+void ft_drawcircle2(t_img *img, int color)
+{
+    int x = 300;
+	int y = 300;
+    int d;
+	int r = get_radius(x, y);
+	int i = 0;
+	
+	x = 0;
+	y = r;
+	d = 3 - 2 * r;
+    while (x < 90)
+	{
+        pixel_put(img, WIDTH / 2 + x, HEIGHT / 2 + y, color);
+        pixel_put(img, WIDTH / 2 + x, HEIGHT / 2 - y, color);
+        pixel_put(img, WIDTH / 2 - x, HEIGHT / 2 + y, color);
+        pixel_put(img, WIDTH / 2 - x, HEIGHT / 2 - y, color);
+        pixel_put(img, WIDTH / 2 + y, HEIGHT / 2 + x, color);
+        pixel_put(img, WIDTH / 2 + y, HEIGHT / 2 - x, color);
+        pixel_put(img, WIDTH / 2 - y, HEIGHT / 2 + x, color);
+        pixel_put(img, WIDTH / 2 - y, HEIGHT / 2 - x, color);
+        if (d < 0)
+            d = d + 4 * x + 6;
+        else
+		{
+            d = d + 4 * (x - y) + 10;
+            y--;
+        }
+        x++;
+    }
 }
 
 // void	test_rotating(t_img *img)

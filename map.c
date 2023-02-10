@@ -6,14 +6,14 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:33:39 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/09 13:16:34 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/10 18:59:51 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 void	test_grid(t_map *map);
 
-void    make_map(t_map **map, int fd)
+t_dim    make_map(t_map **map, int fd)
 {
     char *line;
     char **data;
@@ -32,6 +32,7 @@ void    make_map(t_map **map, int fd)
 	linked_grid(*map);
 	give_coords(*map, dim);
 	// test_grid(*map);
+	return (dim);
 }
 
 void	test_grid(t_map *map)
@@ -105,11 +106,6 @@ void	give_coords(t_map *map, t_dim dim)
 	t_map *temp;
 	int x;
 	int y;
-	// int	cntrx = dim.cntrx;
-	// int rx = dim.rx;
-	// int cmax = dim.cmax;
-
-	// ft_printf("%i%i%i", cntrx, rx, cmax);
 
 	y = 0;
 	while (map)
@@ -122,6 +118,7 @@ void	give_coords(t_map *map, t_dim dim)
 			map->y = dim.cntry - (dim.ry * (dim.rmax / 2)) + (dim.ry * y);
 			rotate_coord(map, 35);
 			add_dimention(map, dim.rz);
+			// printf("x%i y%i\n", map->x, map->y);
 			map = map->next;
 		}
 		map = temp;
@@ -138,7 +135,7 @@ t_dim   get_dimensions(t_map **map)
 	dim.cmax = last->col;
 	dim.rmax = last->row;
     dim.rx = 35;
-    dim.ry = 30;
+    dim.ry = 35;
 	dim.rz = 3;
 	dim.cntrx = WIDTH / 2;
 	dim.cntry = HEIGHT / 2;

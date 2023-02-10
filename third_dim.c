@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:05:27 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/09 11:24:09 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/10 19:09:07 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,14 @@ void    add_dimention(t_map *map, int ratio)
             map->y += ratio;
 }
 
-int add_colour(t_map *map, int arg)
+int add_colour(t_map *map)
 {
 	int colour;
 	
 	colour = 0x009900FF;
     if (map->z != 0)
 	{
-		colour = colour << arg;
-		return (colour);
+		return (colour / 6);
 	}
 	return (colour);
 }

@@ -6,13 +6,13 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/03 15:25:49 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/03 15:27:29 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/10 15:40:25 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 
-int	pythag(int a, int b)
+double	pythag(int a, int b)
 {
 	double c;
 	
@@ -23,9 +23,13 @@ int	pythag(int a, int b)
 	return (c);
 }
 
-int main()
+int rnd(double nbr)
 {
-	int diag;
+	int whole = nbr;
+	double decimal = 0.5;
 
-	diag = pythag(15, 15);
+	decimal = decimal + whole;
+	if (nbr <= decimal)
+		return (nbr);
+	return (nbr + 1); 
 }

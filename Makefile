@@ -1,4 +1,4 @@
-SRC = fdf.c list_funcs.c map.c rotate.c third_dim.c ./libft/libft.a 
+SRC = fdf.c list_funcs.c map.c rotate.c third_dim.c math.c ./libft/libft.a 
 OBJ = $(SRC:.c=.o)
 NAME = fdf
 FLAGS = -Wall -Werror -Wextra -g

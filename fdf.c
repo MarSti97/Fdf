@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/09 13:38:50 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/10 19:03:27 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ void	pixel_put(t_img *img, int x, int y, int colour)
 	*(unsigned int*)dst = colour;
 }
 
-
-
 void	draw_line(t_img *img, t_map *start, t_map *end)
 {
 	struct line	line;
@@ -49,7 +47,7 @@ void	draw_line(t_img *img, t_map *start, t_map *end)
 	err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
 	while (1) //x != end->x && y != end->y
 	{
-		pixel_put(img, line.x, line.y, add_colour(start, z++));
+		pixel_put(img, line.x, line.y, add_colour(start));
 		if (line.x == end->x && line.y == end->y)
 			break;
 		e = err;
@@ -71,14 +69,13 @@ void	draw_map(t_map *map, t_img *img)
 	t_map *temp;
 
 	temp = map->down;
+	// rotate_coord(map, 1, dim);
 	while (map->next || map->down)
 	{
 		if (map->next)
 			draw_line(img, map, map->next);
 		if (map->down)
-		{
 			draw_line(img, map, map->down);
-		}
 		if (map->next)
 			map = map->next;
 		else if (map->down)
@@ -96,6 +93,7 @@ int	main(int ac, char **av)
 	void *win;
 	t_img	img;
 	t_map   *map;
+	t_dim	dim;
     
     map = NULL;
 	if (ac == 2)
@@ -106,12 +104,14 @@ int	main(int ac, char **av)
 		img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
 		
 		fd = open(av[1], O_RDONLY);
-		make_map(&map, fd);
+		dim = make_map(&map, fd);
 		// draw_circle(&img);
-		// draw_map(map, &img);
-		ft_drawcircle2(&img, 0x009900FF);
+		// rotate_coord(map, 1);
+		draw_map(map, &img);
+		// ft_drawcircle2(&img, 0x009900FF);
 		mlx_put_image_to_window(mlx, win, img.img, 0, 0);
 		mlx_hook(win, 17, 1L<<2, close, &mlx);
+		// mlx_hook(win, 2, 1L<<0, close, &mlx);
 		mlx_loop(mlx);
 	}
 	else

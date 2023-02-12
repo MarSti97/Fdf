@@ -6,26 +6,20 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 11:59:34 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/10 18:20:43 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/12 22:13:34 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-double	get_radius(int x, int y)
+double	get_radius(t_map *start, t_map *end)
 {
 	int x_len;
 	int y_len;
 	double radius;
-
-	if (x <= (WIDTH / 2))
-		x_len = (WIDTH / 2) - x;
-	else
-		x_len = x - (WIDTH / 2);
-	if (y <= (HEIGHT / 2))
-		y_len = (HEIGHT / 2) - y;
-	else
-		y_len = y - (HEIGHT / 2);
+	
+	x_len = (start->x > end->x ? start->x - end->x : end->x - start->x);
+	y_len = (start->y > end->y ? start->y - end->y : end->y - start->y);
 	radius = pythag(x_len, y_len);
 	return (radius);
 }
@@ -94,21 +88,31 @@ void	calculate_next(t_map *map, t_dim dim, int degree)
 	// printf("the difference: x%i y%i\n", x, y);
 }
 
-void	rotate_coord(t_map *map, int degree)
+void	rotate_coord(t_map *map, double degree)
 {
-	double 	PI;
-	double	i;
-	int	r;
+	// double 	PI;
+	// double	i;
+	// int	r;
 	// t_map *first;
 	
-	PI = 3.1415926535;
-	r = get_radius(map->x, map->y);
-	i = find_start_angle(map->x, map->y, r);
-	printf("-----NODE------\n|row(%i)col(%i)|\n---------------\n", map->row, map->col);
-	printf("original: x%i y%i\n", map->x, map->y);
-	map->x = rnd((WIDTH / 2) + (r * cos((i + degree) * PI / 180)));
-	map->y = rnd((HEIGHT / 2) + (r * sin((i + degree) * PI / 180)));
-	printf("after: x%i y%i\n", map->x, map->y);
+	// PI = 3.1415926535;
+	// r = get_radius(map->x, map->y);
+	// i = find_start_angle(map->x, map->y, r);
+	// printf("-----NODE------\n|row(%i)col(%i)|\n---------------\n", map->row, map->col);
+	// printf("original: x%i y%i\n", map->x, map->y);
+	map->x = map->x - (WIDTH / 2);
+	if (map->y <= (HEIGHT / 2))
+		map->y =  (HEIGHT / 2) - map->y;
+	else
+		map->y = -1 * (map->y - (HEIGHT / 2));
+	map->x = rnd((map->x * cos(degree)) - (map->y * sin(degree)));
+	map->y = rnd((map->x * sin(degree)) + (map->y * cos(degree)));
+	map->x = map->x + (WIDTH / 2);
+	if (map->y >= 0)
+		map->y =  (HEIGHT / 2) - map->y;
+	else
+		map->y = (-1 * map->y) + (HEIGHT / 2);
+	// printf("after: x%i y%i\n", map->x, map->y);
 	// pixel_put(img, ((WIDTH / 2) + x), ((HEIGHT / 2) + y), 0x009900FF);
 	// try use when making grid
 	// first = map;
@@ -120,36 +124,4 @@ void	rotate_coord(t_map *map, int degree)
 	// 	calculate_next(map, dim, degree);
 	// 	map = map->next;
 	// }
-}
-
-void ft_drawcircle2(t_img *img, int color)
-{
-    int x = 300;
-	int y = 300;
-    int d;
-	int r = get_radius(x, y);
-	// int i = 0;
-	
-	x = 0;
-	y = r;
-	d = 3 - 2 * r;
-    while (x < 90)
-	{
-        pixel_put(img, x, y, color);
-        // pixel_put(img, x, y, color);
-        // pixel_put(img, WIDTH / 2 - x, HEIGHT / 2 + y, color);
-        // pixel_put(img, WIDTH / 2 - x, HEIGHT / 2 - y, color);
-        // pixel_put(img, WIDTH / 2 + y, HEIGHT / 2 + x, color);
-        // pixel_put(img, WIDTH / 2 + y, HEIGHT / 2 - x, color);
-        // pixel_put(img, WIDTH / 2 - y, HEIGHT / 2 + x, color);
-        // pixel_put(img, WIDTH / 2 - y, HEIGHT / 2 - x, color);
-        if (d < 0)
-            d = d + 4 * x + 6;
-        else
-		{
-            d = d + 4 * (x - y) + 10;
-            y--;
-        }
-        x++;
-    }
 }

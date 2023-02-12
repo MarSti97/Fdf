@@ -6,18 +6,18 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/10 19:03:27 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/12 22:26:01 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include "fdf.h"
 
-int close()
-{
-	exit (0);
-	return (0);
-}
+// int close()
+// {
+// 	exit (0);
+// 	return (0);
+// }
 
 void	pixel_put(t_img *img, int x, int y, int colour)
 {
@@ -34,9 +34,11 @@ void	draw_line(t_img *img, t_map *start, t_map *end)
 	struct line	line;
 	int e;
 	int err;
-	int z;
+	int radius;
+	int i;
+	// int z;
 
-	z = 0;
+	// z = 0;
 	line.x = start->x;
 	line.y = start->y;
 	line.dx = abs(end->x - line.x);
@@ -45,9 +47,11 @@ void	draw_line(t_img *img, t_map *start, t_map *end)
 	line.endy = (line.y < end->y ? 1 : -1);
 	
 	err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
+	radius = get_radius(start, end);
+	i = 0;
 	while (1) //x != end->x && y != end->y
 	{
-		pixel_put(img, line.x, line.y, add_colour(start));
+		pixel_put(img, line.x, line.y, add_colour(start, end, radius, i++));
 		if (line.x == end->x && line.y == end->y)
 			break;
 		e = err;
@@ -69,7 +73,6 @@ void	draw_map(t_map *map, t_img *img)
 	t_map *temp;
 
 	temp = map->down;
-	// rotate_coord(map, 1, dim);
 	while (map->next || map->down)
 	{
 		if (map->next)
@@ -93,7 +96,7 @@ int	main(int ac, char **av)
 	void *win;
 	t_img	img;
 	t_map   *map;
-	t_dim	dim;
+	// t_dim	dim;
     
     map = NULL;
 	if (ac == 2)
@@ -104,7 +107,7 @@ int	main(int ac, char **av)
 		img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
 		
 		fd = open(av[1], O_RDONLY);
-		dim = make_map(&map, fd);
+		make_map(&map, fd);
 		// draw_circle(&img);
 		// rotate_coord(map, 1);
 		draw_map(map, &img);

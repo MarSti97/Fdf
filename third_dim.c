@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:05:27 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/10 19:09:07 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/12 22:31:00 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,49 @@ void    add_dimention(t_map *map, int ratio)
             map->y += ratio;
 }
 
-int add_colour(t_map *map)
+int	create_trgb(int t, int r, int g, int b)
+{
+	return (t << 24 | r << 16 | g << 8 | b);
+}
+
+int	get_r(int trgb)
+{
+	return ((trgb >> 16) & 0xFF);
+}
+
+int	get_g(int trgb)
+{
+	return ((trgb >> 8) & 0xFF);
+}
+
+int	get_b(int trgb)
+{
+	return (trgb & 0xFF);
+}
+
+int add_colour(t_map *start, t_map *end, int radius, int i)
 {
 	int colour;
-	
+    int ratio;
+    
+	ratio = radius / start->z
 	colour = 0x009900FF;
-    if (map->z != 0)
+    if (start->z != 0 || end->z != 0)
 	{
-		return (colour / 6);
+		return (create_trgb(00, 153, 00, 255));
 	}
 	return (colour);
 }
+
+// int main()
+// {
+//     int g = 0;
+//     int b = 255;
+    
+//     printf("address = %x\n", create_trgb(00, 153, 00, 255));
+//     printf("green = %x\n", get_g(g));
+//     printf("blue = %x\n", get_b(b));
+// }
 
 // int	ft_puthex(unsigned int nb, char *base)
 // {

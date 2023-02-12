@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/10 19:01:54 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/12 20:06:20 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,14 @@ t_dim    get_dimensions(t_map **map);
 void	linked_grid(t_map *map);
 void	give_coords(t_map *map, t_dim dim);
 // rotate.c
-void	rotate_coord(t_map *map, int degree);
+void	rotate_coord(t_map *map, double degree);
 void	pixel_put(t_img *img, int x, int y, int colour);
 double		get_radius(int x, int y);
 void ft_drawcircle2(t_img *img, int color);
 // void	test_rotating(t_img *img);
 // third_dim.c
 void    add_dimention(t_map *map, int ratio);
-int 	add_colour(t_map *map);
+int 	add_colour(t_map *start, t_map *end);
 // math.c
 double	pythag(int a, int b);
 int rnd(double nbr);

@@ -1,8 +1,8 @@
-SRC = fdf.c list_funcs.c map.c rotate.c third_dim.c math.c ./libft/libft.a 
+SRC = fdf.c list_funcs.c map.c rotate.c third_dim.c math.c controls.c 
 OBJ = $(SRC:.c=.o)
 NAME = fdf
 FLAGS = -Wall -Werror -Wextra -g
-MAKE_LIBS = ./minilibx-linux/./configure
+LIBFT = make -C ./libft --no-print-directory
 RM = rm -f
 CC = cc
 
@@ -17,15 +17,18 @@ all : $(NAME)
 	@$(CC) $(FLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
 $(NAME): $(OBJ)
-	@$(CC) $(OBJ) -Lmlx_linux -lmlx_Linux -L/usr/lib  -Imlx_linux -lXext -lX11 -lm -lz -g -o $(NAME)
+	@$(LIBFT)
+	@$(CC) $(OBJ) -Llibft -lft -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -g -o $(NAME)
 	@echo "$(GREEN)>>>> Compiled <<<<$(END)"
 
 clean :
 	@$(RM) $(OBJ)
+	@make clean -C ./libft --no-print-directory
 	@echo "$(RED)>>>> Cleaned <<<<$(END)"
 
 fclean : clean 
 	@$(RM) $(NAME)
+	@make fclean -C ./libft --no-print-directory
 	@echo "$(RED)>>>> All <<<<$(END)"
 
 re : fclean all

@@ -36,11 +36,9 @@ bonus : $(BONUS_OBJS)
 
 clean : 
 	@$(RM) $(OBJS) $(BONUS_OBJS)
-	@echo "$(RED)>>>> cleaned <<<<$(END)"
 
 fclean : clean
 	@$(RM) $(NAME)
-	@echo "$(RED)>>>> everything <<<<$(END)"
 
 re : fclean all
 

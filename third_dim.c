@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:05:27 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/12 22:31:00 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/13 14:22:08 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,34 +30,30 @@ int	create_trgb(int t, int r, int g, int b)
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
-int	get_r(int trgb)
-{
-	return ((trgb >> 16) & 0xFF);
-}
-
-int	get_g(int trgb)
-{
-	return ((trgb >> 8) & 0xFF);
-}
-
-int	get_b(int trgb)
-{
-	return (trgb & 0xFF);
-}
-
 int add_colour(t_map *start, t_map *end, int radius, int i)
 {
-	int colour;
-    int ratio;
+	int dif;
+	int r;
+	int g;
+	int b;
     
-	ratio = radius / start->z
-	colour = 0x009900FF;
-    if (start->z != 0 || end->z != 0)
+	r = 153 + (10 * start->z);
+	g = 00 + (10 * start->z);
+	b = 255 - (10 * start->z); 
+    if (start->z < end->z)
 	{
-		return (create_trgb(00, 153, 00, 255));
+		dif = (end->z * 10) / radius;
+		return (create_trgb(00, r + (dif * i), g + (dif * i), b - (dif * i)));
 	}
-	return (colour);
-}
+	if (start->z > end->z)
+	{
+		dif = rnd((((double)start->z * 10) / (double)radius) * (double)i);
+		return (create_trgb(00, r - dif, g - dif, b + dif ));
+	}
+	if (start->z == end->z)
+		return (create_trgb(00, r, g, b));
+	return (create_trgb(00, 153, 100, 255));
+} // grb = 00,153,00,255
 
 // int main()
 // {

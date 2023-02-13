@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 11:59:34 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/12 22:13:34 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/13 14:12:04 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,40 +88,50 @@ void	calculate_next(t_map *map, t_dim dim, int degree)
 	// printf("the difference: x%i y%i\n", x, y);
 }
 
-void	rotate_coord(t_map *map, double degree)
+void	start_coord(t_map *map, double degree)
 {
-	// double 	PI;
-	// double	i;
-	// int	r;
-	// t_map *first;
-	
-	// PI = 3.1415926535;
-	// r = get_radius(map->x, map->y);
-	// i = find_start_angle(map->x, map->y, r);
-	// printf("-----NODE------\n|row(%i)col(%i)|\n---------------\n", map->row, map->col);
-	// printf("original: x%i y%i\n", map->x, map->y);
 	map->x = map->x - (WIDTH / 2);
-	if (map->y <= (HEIGHT / 2))
-		map->y =  (HEIGHT / 2) - map->y;
-	else
-		map->y = -1 * (map->y - (HEIGHT / 2));
+	map->y = make_grid_coord(map->y, 1);
 	map->x = rnd((map->x * cos(degree)) - (map->y * sin(degree)));
 	map->y = rnd((map->x * sin(degree)) + (map->y * cos(degree)));
 	map->x = map->x + (WIDTH / 2);
-	if (map->y >= 0)
-		map->y =  (HEIGHT / 2) - map->y;
-	else
-		map->y = (-1 * map->y) + (HEIGHT / 2);
-	// printf("after: x%i y%i\n", map->x, map->y);
-	// pixel_put(img, ((WIDTH / 2) + x), ((HEIGHT / 2) + y), 0x009900FF);
-	// try use when making grid
-	// first = map;
-	// while (map)
-	// {
-	// 	calculate_down(map, dim, degree, first->y);
-	// 	if (map->next == NULL)
-	// 		break;
-	// 	calculate_next(map, dim, degree);
-	// 	map = map->next;
-	// }
+	map->y = make_grid_coord(map->y, 0);
 }
+
+int make_grid_coord(int y, int arg)
+{
+	if (arg == 1)
+	{
+		if (y <= (HEIGHT / 2))
+			y =  (HEIGHT / 2) - y;
+		else
+			y = -1 * (y - (HEIGHT / 2));	
+	}
+	else
+	{
+		if (y >= 0)
+			y =  (HEIGHT / 2) - y;
+		else
+			y = (-1 * y) + (HEIGHT / 2);	
+	}
+	return (y);
+}
+
+void rotate_coord(t_map *map, double degree)
+{
+	double res_y;
+	double res_x;
+	
+	map->x = map->x - (WIDTH / 2);
+	map->y = make_grid_coord(map->y, 1);
+	res_x = rnd((map->x * cos(THETA * degree)) - (map->y * sin(THETA * degree)));
+	res_y = rnd((map->x * sin(THETA * degree)) + (map->y * cos(THETA * degree)));
+	res_x = res_x + (WIDTH / 2);
+	res_y = make_grid_coord(res_y, 0);
+	map->x = res_x;
+	map->y = res_y;
+}
+
+	// printf("-----NODE------\n|row(%i)col(%i)|\n---------------\n", map->row, map->col);
+	// printf("original: x%i y%i\n", map->x, map->y);
+	// printf("after: x%i y%i\n", map->x, map->y);

@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/12 20:06:20 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/13 17:57:50 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,16 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
+# include "mlx.h"
 # include "./libft/libft.h"
 
-# define WIDTH 1080
-# define HEIGHT 640
+# define WIDTH 1800
+# define HEIGHT 900
+# define ESC 65307
+# define THETA (M_PI / 180)
+# define RX 35
+# define RY 35
+# define RZ 2
 
 typedef struct	s_map
 {
@@ -84,15 +90,19 @@ t_dim    get_dimensions(t_map **map);
 void	linked_grid(t_map *map);
 void	give_coords(t_map *map, t_dim dim);
 // rotate.c
-void	rotate_coord(t_map *map, double degree);
+void	start_coord(t_map *map, double degree);
 void	pixel_put(t_img *img, int x, int y, int colour);
-double		get_radius(int x, int y);
-void ft_drawcircle2(t_img *img, int color);
+double	get_radius(t_map *start, t_map *end);
+void 	rotate_coord(t_map *map, double degree);
+int make_grid_coord(int y, int arg);
 // void	test_rotating(t_img *img);
 // third_dim.c
 void    add_dimention(t_map *map, int ratio);
-int 	add_colour(t_map *start, t_map *end);
+int 	add_colour(t_map *start, t_map *end, int radius, int i);
 // math.c
 double	pythag(int a, int b);
 int rnd(double nbr);
+// controls
+void controls(void *win, void *mlx);
+int zoom(int keycode);
 #endif

@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:33:39 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/12 20:14:30 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/13 17:57:21 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_dim    make_map(t_map **map, int fd)
 {
     char *line;
     char **data;
-	t_dim	dim;
+	t_dim dim;
 	
     while (fd)
     {
@@ -116,7 +116,8 @@ void	give_coords(t_map *map, t_dim dim)
 		{
 			map->x = dim.cntrx - (dim.rx * (dim.cmax / 2)) + (dim.rx * x++);
 			map->y = dim.cntry - (dim.ry * (dim.rmax / 2)) + (dim.ry * y);
-			rotate_coord(map, -0.6);
+			start_coord(map, -0.6);
+			// rotate_coord(map, -35);
 			add_dimention(map, dim.rz);
 			// printf("x%i y%i\n", map->x, map->y);
 			map = map->next;
@@ -134,9 +135,9 @@ t_dim   get_dimensions(t_map **map)
     last = ft_listlast(*map);
 	dim.cmax = last->col;
 	dim.rmax = last->row;
-    dim.rx = 35;
-    dim.ry = 35;
-	dim.rz = 2;
+    dim.rx = RX;
+    dim.ry = RY;
+	dim.rz = RZ;
 	dim.cntrx = WIDTH / 2;
 	dim.cntry = HEIGHT / 2;
 	return (dim);

@@ -6,18 +6,11 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/12 22:26:01 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/13 17:57:42 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
 #include "fdf.h"
-
-// int close()
-// {
-// 	exit (0);
-// 	return (0);
-// }
 
 void	pixel_put(t_img *img, int x, int y, int colour)
 {
@@ -36,9 +29,7 @@ void	draw_line(t_img *img, t_map *start, t_map *end)
 	int err;
 	int radius;
 	int i;
-	// int z;
 
-	// z = 0;
 	line.x = start->x;
 	line.y = start->y;
 	line.dx = abs(end->x - line.x);
@@ -48,6 +39,7 @@ void	draw_line(t_img *img, t_map *start, t_map *end)
 	
 	err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
 	radius = get_radius(start, end);
+	// printf("Node %i,%i -> radius : %i\n", start->col, start->row, radius);
 	i = 0;
 	while (1) //x != end->x && y != end->y
 	{
@@ -96,25 +88,20 @@ int	main(int ac, char **av)
 	void *win;
 	t_img	img;
 	t_map   *map;
-	// t_dim	dim;
     
     map = NULL;
 	if (ac == 2)
 	{
 		mlx = mlx_init();
-		win = mlx_new_window(mlx, WIDTH, HEIGHT, "Lets make shit");
+		win = mlx_new_window(mlx, WIDTH, HEIGHT, "Fdf");
 		img.img = mlx_new_image(mlx, WIDTH, HEIGHT);
 		img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
 		
 		fd = open(av[1], O_RDONLY);
 		make_map(&map, fd);
-		// draw_circle(&img);
-		// rotate_coord(map, 1);
 		draw_map(map, &img);
-		// ft_drawcircle2(&img, 0x009900FF);
 		mlx_put_image_to_window(mlx, win, img.img, 0, 0);
-		mlx_hook(win, 17, 1L<<2, close, &mlx);
-		// mlx_hook(win, 2, 1L<<0, close, &mlx);
+		controls(win, &mlx);
 		mlx_loop(mlx);
 	}
 	else

@@ -6,18 +6,13 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 12:11:20 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/13 17:58:13 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/14 18:18:51 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int close(int keycode)
-{
-	if (keycode == ESC)
-		exit (0);
-	return (0);
-}
+int keys(int keycode, void *param);
 
 int close_x()
 {
@@ -25,31 +20,67 @@ int close_x()
 	return (0);
 }
 
-void controls(void *win, void *mlx)
+void controls(t_fdf *fdf, t_img *img)
 {
-		mlx_hook(win, 2, 1L<<0, close, &mlx);
-		mlx_hook(win, 17, 1L<<2, close_x, &mlx);
-		mlx_mouse_hook(win, zoom, &mlx);
+	fdf->img = img;
+	mlx_key_hook(fdf->win, keys, fdf->mlx);
+	// mlx_hook(fdf->win, 2, 1L<<0, keys, fdf->mlx);
+	mlx_hook(fdf->win, 17, 1L<<2, close_x, fdf->mlx);
+	// mlx_hook(fdf->win, 4, 0, zoom, fdf);
+	mlx_mouse_hook(fdf->win, zoom, fdf);
 }
 
-int zoom(int keycode)
+int keys(int keycode, void *param)
 {
-	t_dim new;
-	static int i;
-	
-	new.rx = RX;
-	new.ry = RY;
-	new.rz = RZ;
-	if (keycode == 4)
+	t_fdf *fdf;
+
+	fdf = (t_fdf *)param;
+	if (keycode == ESC)
+		exit (0);
+	if (keycode == E) // rotate right
 	{
-		new.rx = i++;
-		new.ry = i++;
+		fdf->dim.rotate -= 1;
+		give_coords(fdf->map, fdf->dim);
+		draw_map(fdf, fdf->img);
+	}
+	else if (keycode == Q) // rotate left
+	{
+		fdf->dim.rotate -= 1;
+		give_coords(fdf->map, fdf->dim);
+		draw_map(fdf, fdf->img);
+	}
+	// else if (keycode == W)
+	// 	// tilt up
+	// else if (keycode == S)
+	// 	// tilt down
+	// else if (keycode == D)
+	// 	// spin right
+	// else if (keycode == A)
+		// spin left
+	return (0);
+}
+
+int zoom(int button, int x, int y, void *param)
+{
+	t_fdf *fdf;
+	
+	(void)x;
+	(void)y;
+	fdf = (t_fdf *)param;
+	if (button == 4)
+	{
+		fdf->dim.rx += 1;
+		fdf->dim.ry += 1;
+		give_coords(fdf->map, fdf->dim);
+		draw_map(fdf, fdf->img);
 		// new.rz = make a preoportional thing
 	}
-	if (keycode == 5)
+	else if (button == 5)
 	{
-		new.rx = i--;
-		new.ry = i--;
+		fdf->dim.rx -= 1;
+		fdf->dim.ry -= 1;
+		give_coords(fdf->map, fdf->dim);
+		draw_map(fdf, fdf->img);
 	}
 	return (0);
 }

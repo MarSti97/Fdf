@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:33:39 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/13 17:57:21 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/14 15:52:31 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_dim    make_map(t_map **map, int fd)
 	dim = get_dimensions(map);
 	linked_grid(*map);
 	give_coords(*map, dim);
-	// test_grid(*map);
 	return (dim);
 }
 
@@ -117,7 +116,7 @@ void	give_coords(t_map *map, t_dim dim)
 			map->x = dim.cntrx - (dim.rx * (dim.cmax / 2)) + (dim.rx * x++);
 			map->y = dim.cntry - (dim.ry * (dim.rmax / 2)) + (dim.ry * y);
 			start_coord(map, -0.6);
-			// rotate_coord(map, -35);
+			rotate_coord(map, dim.rotate);
 			add_dimention(map, dim.rz);
 			// printf("x%i y%i\n", map->x, map->y);
 			map = map->next;
@@ -140,5 +139,6 @@ t_dim   get_dimensions(t_map **map)
 	dim.rz = RZ;
 	dim.cntrx = WIDTH / 2;
 	dim.cntry = HEIGHT / 2;
+	dim.rotate = 0;
 	return (dim);
 }

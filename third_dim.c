@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:05:27 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/13 14:22:08 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/14 11:55:26 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,17 @@ int add_colour(t_map *start, t_map *end, int radius, int i)
 	int g;
 	int b;
     
-	r = 153 + (10 * start->z);
-	g = 00 + (10 * start->z);
-	b = 255 - (10 * start->z); 
+	r = 153 + (8 * start->z);
+	g = 00 + (8 * start->z);
+	b = 255 - (8 * start->z); 
     if (start->z < end->z)
 	{
-		dif = (end->z * 10) / radius;
+		dif = (end->z * 8) / radius;
 		return (create_trgb(00, r + (dif * i), g + (dif * i), b - (dif * i)));
 	}
 	if (start->z > end->z)
 	{
-		dif = rnd((((double)start->z * 10) / (double)radius) * (double)i);
+		dif = rnd((((double)start->z * 8) / (double)radius) * (double)i);
 		return (create_trgb(00, r - dif, g - dif, b + dif ));
 	}
 	if (start->z == end->z)

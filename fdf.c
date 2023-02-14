@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/13 17:57:42 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/14 18:16:27 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,49 +60,51 @@ void	draw_line(t_img *img, t_map *start, t_map *end)
 	}
 }
 
-void	draw_map(t_map *map, t_img *img)
+void	draw_map(t_fdf *fdf, t_img *img)
 {
 	t_map *temp;
 
-	temp = map->down;
-	while (map->next || map->down)
+	temp = fdf->map->down;
+	// mlx_destroy_image(fdf->mlx, &img);
+	// ft_bzero(img->addr, sizeof(img->bpp) * HEIGHT * WIDTH);
+	while (fdf->map->next || fdf->map->down)
 	{
-		if (map->next)
-			draw_line(img, map, map->next);
-		if (map->down)
-			draw_line(img, map, map->down);
-		if (map->next)
-			map = map->next;
-		else if (map->down)
+		if (fdf->map->next)
+			draw_line(img, fdf->map, fdf->map->next);
+		if (fdf->map->down)
+			draw_line(img, fdf->map, fdf->map->down);
+		if (fdf->map->next)
+			fdf->map = fdf->map->next;
+		else if (fdf->map->down)
 		{
-			map = temp;
+			fdf->map = temp;
 			temp = temp->down;
 		}
 	}
+	mlx_put_image_to_window(fdf->mlx, fdf->win, img->img, 0, 0);
 }
 
 int	main(int ac, char **av)
 {
 	int fd;
-	void *mlx;
-	void *win;
 	t_img	img;
-	t_map   *map;
+	t_fdf	*fdf;
     
-    map = NULL;
 	if (ac == 2)
 	{
-		mlx = mlx_init();
-		win = mlx_new_window(mlx, WIDTH, HEIGHT, "Fdf");
-		img.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+		fdf = (t_fdf *)malloc(sizeof(t_fdf));
+		fdf->map = NULL;
+		if (!fdf)
+			return (0);
+		fdf->mlx = mlx_init();
+		fdf->win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "Fdf");
+		img.img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
 		img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
-		
 		fd = open(av[1], O_RDONLY);
-		make_map(&map, fd);
-		draw_map(map, &img);
-		mlx_put_image_to_window(mlx, win, img.img, 0, 0);
-		controls(win, &mlx);
-		mlx_loop(mlx);
+		fdf->dim = make_map(&fdf->map, fd);
+		draw_map(fdf, &img);
+		controls(fdf, &img);
+		mlx_loop(fdf->mlx);
 	}
 	else
 		return(0);

@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/13 17:57:50 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/14 15:51:47 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,17 @@
 # define WIDTH 1800
 # define HEIGHT 900
 # define ESC 65307
+# define Q 65307
+# define W 119
+# define E 101
+# define A 97
+# define S 115
+# define D 100
 # define THETA (M_PI / 180)
 # define RX 35
 # define RY 35
 # define RZ 2
+
 
 typedef struct	s_map
 {
@@ -76,9 +83,20 @@ typedef struct	dimensions
 	int	rz;
 	int cntrx;
 	int cntry;
+	int rotate;
 }				t_dim;
 
+typedef struct	s_fdf
+{
+	t_map	*map;
+	t_img	*img;
+	t_dim	dim;
+	void	*mlx;
+	void	*win;
+}				t_fdf;
+
 // fdf
+void	draw_map(t_fdf *fdf, t_img *img);
 // list_funcs
 void	ft_listadd_back(t_map **lst, t_map *new);
 void	error(t_map *lst);
@@ -103,6 +121,6 @@ int 	add_colour(t_map *start, t_map *end, int radius, int i);
 double	pythag(int a, int b);
 int rnd(double nbr);
 // controls
-void controls(void *win, void *mlx);
-int zoom(int keycode);
+void controls(t_fdf *fdf, t_img *img);
+int zoom(int button, int x, int y, void *param);
 #endif

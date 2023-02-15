@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 11:59:34 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/13 14:12:04 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/15 11:04:19 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,40 +54,6 @@ double	find_start_angle(int x, int y, double hypot)
 	return (rnd(degree));
 }
 
-void	calculate_down(t_map *map, t_dim dim, int degree, int first)
-{
-	double x = 0;
-	double y = 0;
-	int i_down;
-
-	i_down = 1;
-	x = ((dim.ry * i_down) * sin(degree));
-	while (map->down)
-	{
-		printf("x%i y%i\n", map->x, map->y);
-		y = pythag(x, (dim.ry * i_down++));
-		// printf("the difference: x%i y%i\n", x, y);
-		map = map->down;
-		map->x = map->x - rnd(x);
-		map->y = first + rnd(y);
-		x += x;
-	}
-}
-
-void	calculate_next(t_map *map, t_dim dim, int degree)
-{
-	double x = 0;
-	double y = 0;
-	static int i_next;
-
-	printf("next :x%i y%i\n", map->x, map->y);
-	y = map->y - ((dim.rx * ++i_next) * sin(degree));
-	x = map->x + pythag(y, (dim.rx * i_next));
-	map->next->y = rnd(y);
-	map->next->x = rnd(x);
-	// printf("the difference: x%i y%i\n", x, y);
-}
-
 void	start_coord(t_map *map, double degree)
 {
 	map->x = map->x - (WIDTH / 2);
@@ -132,6 +98,38 @@ void rotate_coord(t_map *map, double degree)
 	map->y = res_y;
 }
 
+// void	calculate_down(t_map *map, t_dim dim, int degree, int first)
+// {
+// 	double x = 0;
+// 	double y = 0;
+// 	int i_down;
+
+// 	i_down = 1;
+// 	x = ((dim.ry * i_down) * sin(degree));
+// 	while (map->down)
+// 	{
+// 		printf("x%i y%i\n", map->x, map->y);
+// 		y = pythag(x, (dim.ry * i_down++));
+// 		// printf("the difference: x%i y%i\n", x, y);
+// 		map = map->down;
+// 		map->x = map->x - rnd(x);
+// 		map->y = first + rnd(y);
+// 		x += x;
+// 	}
+// }
+// void	calculate_next(t_map *map, t_dim dim, int degree)
+// {
+// 	double x = 0;
+// 	double y = 0;
+// 	static int i_next;
+
+// 	printf("next :x%i y%i\n", map->x, map->y);
+// 	y = map->y - ((dim.rx * ++i_next) * sin(degree));
+// 	x = map->x + pythag(y, (dim.rx * i_next));
+// 	map->next->y = rnd(y);
+// 	map->next->x = rnd(x);
+// 	// printf("the difference: x%i y%i\n", x, y);
+// }
 	// printf("-----NODE------\n|row(%i)col(%i)|\n---------------\n", map->row, map->col);
 	// printf("original: x%i y%i\n", map->x, map->y);
 	// printf("after: x%i y%i\n", map->x, map->y);

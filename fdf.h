@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/14 15:51:47 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/15 15:14:19 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # define WIDTH 1800
 # define HEIGHT 900
 # define ESC 65307
-# define Q 65307
+# define Q 113
 # define W 119
 # define E 101
 # define A 97
@@ -33,7 +33,6 @@
 # define THETA (M_PI / 180)
 # define RX 35
 # define RY 35
-# define RZ 2
 
 
 typedef struct	s_map
@@ -56,7 +55,7 @@ typedef struct	s_img
 	int		endian;
 }				t_img;
 
-struct	coordinates
+struct	s_coordinates
 {
 	int	x_start;
 	int	y_start;
@@ -64,7 +63,7 @@ struct	coordinates
 	int	y_end;
 };
 
-struct line
+struct s_line
 {
 	int	x;
 	int	y;
@@ -74,7 +73,7 @@ struct line
 	int endy;
 };
 
-typedef struct	dimensions
+typedef struct	s_dimensions
 {
 	int	cmax;
 	int	rmax;
@@ -83,7 +82,11 @@ typedef struct	dimensions
 	int	rz;
 	int cntrx;
 	int cntry;
+	int zoom;
 	int rotate;
+	int tilt;
+	int spin;
+	int	z_depth;
 }				t_dim;
 
 typedef struct	s_fdf
@@ -115,12 +118,14 @@ void 	rotate_coord(t_map *map, double degree);
 int make_grid_coord(int y, int arg);
 // void	test_rotating(t_img *img);
 // third_dim.c
-void    add_dimention(t_map *map, int ratio);
+void    add_dimention(t_map *map, t_dim dim);
 int 	add_colour(t_map *start, t_map *end, int radius, int i);
 // math.c
 double	pythag(int a, int b);
 int rnd(double nbr);
 // controls
 void controls(t_fdf *fdf, t_img *img);
-int zoom(int button, int x, int y, void *param);
+int zoom(int button, int x, int y, t_fdf *fdf);
+void tilt(t_map *map, double degree);
+void spin(t_map *map, double degree);
 #endif

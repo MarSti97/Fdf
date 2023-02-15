@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/14 18:16:27 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/15 15:42:17 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	pixel_put(t_img *img, int x, int y, int colour)
 
 void	draw_line(t_img *img, t_map *start, t_map *end)
 {
-	struct line	line;
+	struct s_line	line;
 	int e;
 	int err;
 	int radius;
@@ -62,22 +62,23 @@ void	draw_line(t_img *img, t_map *start, t_map *end)
 
 void	draw_map(t_fdf *fdf, t_img *img)
 {
-	t_map *temp;
-
-	temp = fdf->map->down;
-	// mlx_destroy_image(fdf->mlx, &img);
-	// ft_bzero(img->addr, sizeof(img->bpp) * HEIGHT * WIDTH);
-	while (fdf->map->next || fdf->map->down)
+	t_map	*temp;
+	t_map	*map_sub;
+	
+	map_sub = fdf->map;
+	temp = map_sub->down;
+	ft_bzero(img->addr, sizeof(img->bpp) * HEIGHT * WIDTH);
+	while (map_sub->next || map_sub->down)
 	{
-		if (fdf->map->next)
-			draw_line(img, fdf->map, fdf->map->next);
-		if (fdf->map->down)
-			draw_line(img, fdf->map, fdf->map->down);
-		if (fdf->map->next)
-			fdf->map = fdf->map->next;
-		else if (fdf->map->down)
+		if (map_sub->next)
+			draw_line(img, map_sub, map_sub->next);
+		if (map_sub->down)
+			draw_line(img, map_sub, map_sub->down);
+		if (map_sub->next)
+			map_sub = map_sub->next;
+		else if (map_sub->down)
 		{
-			fdf->map = temp;
+			map_sub = temp;
 			temp = temp->down;
 		}
 	}
@@ -93,9 +94,9 @@ int	main(int ac, char **av)
 	if (ac == 2)
 	{
 		fdf = (t_fdf *)malloc(sizeof(t_fdf));
-		fdf->map = NULL;
 		if (!fdf)
 			return (0);
+		fdf->map = NULL;
 		fdf->mlx = mlx_init();
 		fdf->win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "Fdf");
 		img.img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);

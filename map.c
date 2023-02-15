@@ -6,12 +6,12 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:33:39 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/14 15:52:31 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/15 16:44:08 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-void	test_grid(t_map *map);
+int get_z_ratio(t_map *map);
 
 t_dim    make_map(t_map **map, int fd)
 {
@@ -32,25 +32,6 @@ t_dim    make_map(t_map **map, int fd)
 	linked_grid(*map);
 	give_coords(*map, dim);
 	return (dim);
-}
-
-void	test_grid(t_map *map)
-{
-	// t_map *temp = map;
-	while (map)
-	{
-		ft_printf("Node: row:%i, col:%i x:%i y:%i  -> ", map->row, map->col, map->x, map->y);
-		ft_printf("Node: row:%i, col:%i x:%i y:%i  -> ", map->next->row, map->next->col, map->next->x, map->next->y);
-		ft_printf("Node: row:%i, col:%i x:%i y:%i  -> ", map->next->next->row, map->next->next->col, map->next->next->x, map->next->next->y);
-		ft_printf("\n----\n");
-		map = map->down;
-	}
-	// ft_printf("\n");
-	// while (temp)
-	// {
-	// 	ft_printf("Node %i: z:%i row:%i, col:%i  ->  ", i++, temp->down->z, temp->down->row, temp->down->col);
-	// 	temp = temp->next;
-	// }
 }
 
 void	linked_grid(t_map *map)
@@ -86,8 +67,6 @@ void    add_data(t_map **map, char **data)
 	col = 1;
     while (data[i])
     {
-		// d = data[i];
-		// ft_printf("%s", d);
         node = (t_map *)malloc(sizeof(t_map));
 		if (!node)
 			error(*map);
@@ -102,26 +81,29 @@ void    add_data(t_map **map, char **data)
 
 void	give_coords(t_map *map, t_dim dim)
 {
+	t_map *map_sub;
 	t_map *temp;
 	int x;
 	int y;
 
 	y = 0;
-	while (map)
+	map_sub = map;
+	while (map_sub)
 	{
 		x = 0;
-		temp = map->down;
-		while(map)
+		temp = map_sub->down;
+		while(map_sub)
 		{
-			map->x = dim.cntrx - (dim.rx * (dim.cmax / 2)) + (dim.rx * x++);
-			map->y = dim.cntry - (dim.ry * (dim.rmax / 2)) + (dim.ry * y);
-			start_coord(map, -0.6);
-			rotate_coord(map, dim.rotate);
-			add_dimention(map, dim.rz);
-			// printf("x%i y%i\n", map->x, map->y);
-			map = map->next;
+			map_sub->x = dim.cntrx - (dim.rx * (dim.cmax / 2)) + (dim.rx * x++);
+			map_sub->y = dim.cntry - (dim.ry * (dim.rmax / 2)) + (dim.ry * y);
+			// start_coord(map_sub, -0.6);
+			rotate_coord(map_sub, dim.rotate);
+			tilt(map_sub, dim.tilt);
+			spin(map_sub, dim.spin);
+			add_dimention(map_sub, dim);
+			map_sub = map_sub->next;
 		}
-		map = temp;
+		map_sub = temp;
 		y++;
 	}
 }
@@ -136,9 +118,38 @@ t_dim   get_dimensions(t_map **map)
 	dim.rmax = last->row;
     dim.rx = RX;
     dim.ry = RY;
-	dim.rz = RZ;
+	dim.rz = get_z_ratio(*map);
 	dim.cntrx = WIDTH / 2;
 	dim.cntry = HEIGHT / 2;
-	dim.rotate = 0;
+	dim.zoom = 0;
+	dim.z_depth = 0;
+	dim.rotate = -32;
+	dim.tilt = 58;
+	dim.spin = 0;
 	return (dim);
+}
+
+int get_z_ratio(t_map *map)
+{
+	t_map	*temp;
+	int		high;
+	int		low;
+	int		i;
+
+	temp = map->next;
+	high = map->z;
+	low = map->z;
+	while (temp)
+	{
+		if (high < temp->z)
+			high = temp->z;
+		if (low > temp->z)
+			low = temp->z;
+		temp = temp->next;
+	}
+	i = low;
+	while (i != high)
+		i++;
+	printf("smallest: %i, largest: %i, diff: %i\n", low, high, i);
+	return (i);
 }

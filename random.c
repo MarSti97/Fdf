@@ -61,3 +61,22 @@
 // 	while (line.y > line.finishy)
 // 		pixel_put(img, line.x, line.y--, 0x009900FF);
 // }
+
+// // void	test_grid(t_map *map)
+// {
+// 	// t_map *temp = map;
+// 	while (map)
+// 	{
+// 		ft_printf("Node: row:%i, col:%i x:%i y:%i  -> ", map->row, map->col, map->x, map->y);
+// 		ft_printf("Node: row:%i, col:%i x:%i y:%i  -> ", map->next->row, map->next->col, map->next->x, map->next->y);
+// 		ft_printf("Node: row:%i, col:%i x:%i y:%i  -> ", map->next->next->row, map->next->next->col, map->next->next->x, map->next->next->y);
+// 		ft_printf("\n----\n");
+// 		map = map->down;
+// 	}
+// 	// ft_printf("\n");
+// 	// while (temp)
+// 	// {
+// 	// 	ft_printf("Node %i: z:%i row:%i, col:%i  ->  ", i++, temp->down->z, temp->down->row, temp->down->col);
+// 	// 	temp = temp->next;
+// 	// }
+// }

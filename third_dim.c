@@ -6,23 +6,27 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:05:27 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/14 11:55:26 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/15 16:48:39 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void    add_dimention(t_map *map, int ratio)
+void    add_dimention(t_map *map, t_dim dim)
 {
-    int i;
-
-    i = 0;
+	int end;
+	int	i;
+	// need to see the max high and min depth to find a ratio z
+	end = (dim.tilt / dim.rz);
+	i = 0;
     if (map->z > 0)
-        while (i++ != map->z)
-            map->y -= ratio;
+		while (i++ < end * map->z)
+            map->y--;
     else if (map->z < 0)
-        while (i-- != map->z)
-            map->y += ratio;
+		while (i++ < end * map->z)
+            map->y++;
+	if (dim.tilt > 90)
+		map->y += dim.tilt - 90;
 }
 
 int	create_trgb(int t, int r, int g, int b)

@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/15 15:42:17 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/16 17:24:00 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	draw_line(t_img *img, t_map *start, t_map *end)
 	i = 0;
 	while (1) //x != end->x && y != end->y
 	{
-		pixel_put(img, line.x, line.y, add_colour(start, end, radius, i++));
+		pixel_put(img, line.x, line.y, colour_iter(start, end, radius, i++));
 		if (line.x == end->x && line.y == end->y)
 			break;
 		e = err;

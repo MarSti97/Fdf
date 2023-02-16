@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 12:11:20 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/15 15:14:14 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/16 21:37:54 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,15 @@ void tilt(t_map *map, double degree)
 void spin(t_map *map, double degree)
 {
 	double res_x;
+	double res_y;
 	
 	map->x = map->x - (WIDTH / 2);
-	res_x = rnd((map->x * cos(THETA * degree)));
+	map->y = make_grid_coord(map->y, 1);
+	res_x = rnd((map->x * cos(THETA * degree)) + (map->y * sin(THETA * degree)));
+	res_y = rnd((map->x * sin(THETA * degree)) + (map->y * cos(THETA * degree)));
+	// res_x = rnd((map->x * cos(THETA * degree)));
 	res_x = res_x + (WIDTH / 2);
 	map->x = res_x;
+	res_y = make_grid_coord(res_y, 0);
+	map->y = res_y;
 }

@@ -1,40 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   math.c                                             :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/03 15:25:49 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/16 20:49:49 by mstiedl          ###   ########.fr       */
+/*   Created: 2023/02/16 17:17:01 by mstiedl           #+#    #+#             */
+/*   Updated: 2023/02/16 17:17:17 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
+#include "fdf.h"
 
-double	pythag(int a, int b)
+int	my_ternery(int a, int b, int yes, int no)
 {
-	double c;
-	
-	a *= a;
-	b *= b;
-	c = a + b;
-	c = sqrt(c);
-	return (c);
-}
-
-int rnd(double nbr)
-{
-	int whole = nbr;
-	double decimal = 0.5;
-
-	decimal = decimal + whole;
-	if (nbr <= decimal)
-		return (nbr);
-	return (nbr + 1); 
-}
-
-int	percentage(double full, double percent)
-{
-	return(rnd((full * percent) / 100));
+	if (a > b)
+		return (yes);
+	else
+		return (no);
 }

@@ -1,4 +1,4 @@
-SRC = fdf.c list_funcs.c map.c rotate.c third_dim.c math.c controls.c 
+SRC = fdf.c list_funcs.c map.c rotate.c third_dim.c math.c controls.c colour.c tools.c
 OBJ = $(SRC:.c=.o)
 NAME = fdf
 FLAGS = -Wall -Werror -Wextra -g

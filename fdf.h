@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/16 21:17:43 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/17 19:00:17 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,18 @@
 # define A 97
 # define S 115
 # define D 100
+# define P 112
+# define C 99
+# define UP 65362
+# define DOWN 65364
+# define LEFT 65361
+# define RIGHT 65363
 # define THETA (M_PI / 180)
 # define RX 35
 # define RY 35
 # define RZ 35
+# define COLOUR_START 0x009900FF
+# define COLOUR_END 0x00FFFC00
 
 
 typedef struct	s_map
@@ -72,6 +80,8 @@ struct s_line
 	int	dy;
 	int endx;
 	int endy;
+	int	e;
+	int	err;
 };
 
 typedef struct	s_dimensions
@@ -80,7 +90,9 @@ typedef struct	s_dimensions
 	int	rmax;
 	int	rx;
 	int	ry;
-	int	rz;
+	int	z_max;
+	int	z_min;
+	int	colour_r;
 	int cntrx;
 	int cntry;
 	int zoom;
@@ -99,7 +111,17 @@ typedef struct	s_fdf
 	void	*win;
 }				t_fdf;
 
+typedef struct	s_colour
+{
+	int	r;
+	int	g;
+	int	b;
+	int s_z;
+	int e_z;
+}				t_colour;
+
 // fdf
+void	pixel_put(t_img *img, int x, int y, int colour);
 void	draw_map(t_fdf *fdf, t_img *img);
 // list_funcs
 void	ft_listadd_back(t_map **lst, t_map *new);
@@ -112,14 +134,13 @@ t_dim	get_dimensions(t_map **map);
 void	linked_grid(t_map *map);
 void	give_coords(t_map *map, t_dim dim);
 // rotate.c
-void	start_coord(t_map *map, double degree);
-void	pixel_put(t_img *img, int x, int y, int colour);
 double	get_radius(t_map *start, t_map *end);
-void 	rotate_coord(t_map *map, double degree);
-int		make_grid_coord(int y, int arg);
+void 	rotate_coord(t_map *map, double degree, t_dim dim);
+int		make_grid_coord(int y, int arg, int height);
+void	tilt(t_map *map, double degree, t_dim dim);
+void	spin(t_map *map, double degree, t_dim dim);
 // third_dim.c
 void	add_dimention(t_map *map, t_dim dim);
-int		add_colour(t_map *start, t_map *end, int radius, int i);
 // math.c
 double	pythag(int a, int b);
 int		rnd(double nbr);
@@ -127,8 +148,9 @@ int		percentage(double full, double percent);
 // controls
 void	controls(t_fdf *fdf, t_img *img);
 int		zoom(int button, int x, int y, t_fdf *fdf);
-void	tilt(t_map *map, double degree);
-void	spin(t_map *map, double degree);
+t_dim	translate(int keycode, t_dim dim);
+t_dim	para_cent(int keycode, t_dim dim);
+int keys(int keycode, t_fdf *fdf);
 // tools
 int		my_ternery(int a, int b, int yes, int no);
 //  colour
@@ -136,5 +158,10 @@ int		colour_iter(t_map *start, t_map *end, int radius, int i);
 int		get_dif(int start, int end, int radius, int ratio);
 int		create_trgb(int t, int r, int g, int b);
 int 	colour_loop(int i);
+// colour alt
+int add_colour(t_colour start, t_colour i, t_dim dim, int change);
+t_colour	get_rgb(int colour);
+t_colour	get_colour_dif(t_dim dim);
+t_colour	start_colour(t_colour dif, int start_z, int end_z);
 
 #endif

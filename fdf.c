@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/16 17:24:00 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/17 19:02:06 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,39 +22,36 @@ void	pixel_put(t_img *img, int x, int y, int colour)
 	*(unsigned int*)dst = colour;
 }
 
-void	draw_line(t_img *img, t_map *start, t_map *end)
+void	draw_line(t_img *img, t_map *start, t_map *end, t_dim dim)
 {
 	struct s_line	line;
-	int e;
-	int err;
-	int radius;
-	int i;
+	t_colour		colour_i;
+	t_colour		colour;
+	int 			i;
 
+	i = 0;
 	line.x = start->x;
 	line.y = start->y;
 	line.dx = abs(end->x - line.x);
 	line.dy = abs(end->y - line.y);
-	line.endx = (line.x < end->x ? 1 : -1);
-	line.endy = (line.y < end->y ? 1 : -1);
-	
-	err = (line.dx > line.dy ? line.dx : -line.dy) / 2;
-	radius = get_radius(start, end);
-	// printf("Node %i,%i -> radius : %i\n", start->col, start->row, radius);
-	i = 0;
-	while (1) //x != end->x && y != end->y
+	line.endx = my_ternery(end->x, line.x, 1, -1);
+	line.endy = my_ternery(end->y, line.y, 1, -1);
+	line.err = (my_ternery(line.dx, line.dy, line.dx, -line.dy) / 2);
+	dim.colour_r = rnd(get_radius(start, end));
+	colour_i = get_colour_dif(dim);
+	colour = start_colour(colour_i, start->z, end->z);
+	while (line.x != end->x || line.y != end->y)
 	{
-		pixel_put(img, line.x, line.y, colour_iter(start, end, radius, i++));
-		if (line.x == end->x && line.y == end->y)
-			break;
-		e = err;
-		if (e > -line.dx)
+		pixel_put(img, line.x, line.y, add_colour(colour, colour_i, dim, i++));
+		line.e = line.err;
+		if (line.e > -line.dx)
 		{
-			err -= line.dy;
+			line.err -= line.dy;
 			line.x += line.endx;
 		}
-		if (e < line.dy)
+		if (line.e < line.dy)
 		{
-			err += line.dx;
+			line.err += line.dx;
 			line.y += line.endy;
 		}
 	}
@@ -71,9 +68,9 @@ void	draw_map(t_fdf *fdf, t_img *img)
 	while (map_sub->next || map_sub->down)
 	{
 		if (map_sub->next)
-			draw_line(img, map_sub, map_sub->next);
+			draw_line(img, map_sub, map_sub->next, fdf->dim);
 		if (map_sub->down)
-			draw_line(img, map_sub, map_sub->down);
+			draw_line(img, map_sub, map_sub->down, fdf->dim);
 		if (map_sub->next)
 			map_sub = map_sub->next;
 		else if (map_sub->down)

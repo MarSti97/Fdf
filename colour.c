@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 16:56:40 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/17 19:27:15 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/20 22:39:46 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,133 +22,98 @@ t_colour	get_rgb(int colour)
 	return(rgb);
 }
 
-t_colour	get_colour_dif(t_dim dim)
+t_colour	get_colour_dif(t_dim dim, t_colour zero, int z)
 {
-	t_colour	start_colour = get_rgb(COLOUR_START);
-	t_colour	highest_point_colour = get_rgb(COLOUR_END);
+	t_colour	top = get_rgb(COLOUR_TOP);
+	t_colour	bottom = get_rgb(COLOUR_BOTTOM);
 	t_colour	res;
+	int			divider = my_ternery(0, z, dim.z_min, dim.z_max);
 	
-	res.r = ((start_colour.r - highest_point_colour.r) / dim.z_max);
-	res.g = ((start_colour.g - highest_point_colour.g) / dim.z_max);
-	res.b = ((start_colour.b - highest_point_colour.b) / dim.z_max);
+	if (z == 0)
+		return(zero);
+	res.r = ((my_ternery(0, z, bottom.r, top.r) - zero.r) / divider);
+	res.g = ((my_ternery(0, z, bottom.g, top.g) - zero.g) / divider);
+	res.b = ((my_ternery(0, z, bottom.b, top.b) - zero.b) / divider);
 	return (res);
 }
 
-// t_colour	get_colour_dif_neg(t_dim dim)
-// {
-// 	t_colour	start_colour = get_rgb(0x009900FF);
-// 	t_colour	lowest_point_colour = get_rgb(0x00FCFF);
-// 	t_colour	res;
-	
-// 	res.r = ((start_colour.r - lowest_point_colour.r) / dim.z_min);
-// 	res.g = ((start_colour.g - lowest_point_colour.g) / dim.z_min);
-// 	res.b = ((start_colour.b - lowest_point_colour.b) / dim.z_min);
-// 	return (res);
-// }
-
-int add_colour(t_colour start, t_colour i, t_dim dim, int change)
+int do_accurate_op(double dif, double radius, double inc)
 {
-	// t_colour	dif_neg = get_colour_dif_neg(dim);
-	t_colour	res;
-	
-	if (start.s_z < start.e_z)
-	{
-		res.r = (start.r + ((dim.colour_r / i.r) * change));
-		res.g = (start.g + ((dim.colour_r / i.g) * change));
-		res.b = (start.b + ((dim.colour_r / i.b) * change));
-		return (create_trgb(0, res.r, res.g, res.b));	
-	}
-	else if (start.s_z > start.e_z)
-	{
-		res.r = (start.r - ((i.r / dim.colour_r)) * change);
-		res.g = (start.g - ((i.g / dim.colour_r)) * change);
-		res.b = (start.b - ((i.b / dim.colour_r)) * change);
-		return (create_trgb(0, res.r, res.g, res.b));
-	}
-	return (create_trgb(0, start.r, start.g, start.b));
+	return(rnd((dif / radius) * inc));
 }
 
-t_colour	start_colour(t_colour dif, int start_z, int end_z)
+int	split_colour(t_colour start, t_colour end, t_dim dim, int i)
 {
+	t_colour	res;
+	t_colour	base = get_rgb(COLOUR_ZERO);
+	double		divide = ((double)abs(start.s_z) / (abs(start.s_z) + abs(end.e_z)));
+	static int	half;
+
+	if (i < (dim.colour_r * divide))
+	{
+		res.r = (start.r + do_accurate_op((base.r - start.r), (dim.colour_r * divide), i));
+		res.g = (start.g + do_accurate_op((base.g - start.g), (dim.colour_r * divide), i));
+		res.b = (start.b + do_accurate_op((base.b - start.b), (dim.colour_r * divide), i));
+		half = i;
+	}
+	else
+	{
+		divide = ((double)abs(end.e_z) / (abs(start.s_z) + abs(end.e_z)));
+		res.r = (base.r + do_accurate_op((end.r - base.r), (dim.colour_r * divide), (i - half)));
+		res.g = (base.g + do_accurate_op((end.g - base.g), (dim.colour_r * divide), (i - half)));
+		res.b = (base.b + do_accurate_op((end.b - base.b), (dim.colour_r * divide), (i - half)));
+	}
+	return (create_trgb(0, res.r, res.g, res.b));
+} 
+
+int add_colour(t_colour start, t_colour end, t_dim dim, int i)
+{
+	t_colour	res;
+	
+	if ((start.s_z * end.e_z) < 0)
+		return(split_colour(start, end, dim, i));
+	else if (start.s_z != end.e_z)
+	{
+		res.r = (start.r + do_accurate_op((end.r - start.r), dim.colour_r, i));
+		res.g = (start.g + do_accurate_op((end.g - start.g), dim.colour_r, i));
+		res.b = (start.b + do_accurate_op((end.b - start.b), dim.colour_r, i));
+	}
+	else
+		return (create_trgb(0, start.r, start.g, start.b));
+	return (create_trgb(0, res.r, res.g, res.b));
+}
+
+t_colour	start_colour(t_dim dim, int start_z)
+{
+	t_colour	dif;
 	t_colour	base;
 	t_colour	res;
 
-	base = get_rgb(COLOUR_START);
+	base = get_rgb(COLOUR_ZERO);
+	dif = get_colour_dif(dim, base, start_z);
 	res.r = base.r + (dif.r * start_z);
 	res.g = base.g + (dif.g * start_z);
 	res.b = base.b + (dif.b * start_z);
 	res.s_z = start_z;
-	res.e_z = end_z;
 	return (res);
 }
 
-// int	colour_iter(t_map *start, t_map *end, int radius, int i)
-// {
-// 	int	dif;
-// 	int	ratio_colour;
+t_colour	end_colour(t_dim dim, int end_z)
+{
+	t_colour	dif;
+	t_colour	base;
+	t_colour	res;
 
-// 	ratio_colour = 20;
-// 	if (start->z < end->z)
-// 	{
-// 		dif = get_dif(start->z, end->z, radius, ratio_colour);
-// 		return (colour_loop(510 + (start->z * ratio_colour) + (dif * i)));
-// 	}
-// 	if (start->z > end->z)
-// 	{
-// 		dif = get_dif(start->z, end->z, radius, ratio_colour);
-// 		// dif = rnd((((double)start->z * 8) / (double)radius) * (double)i);
-// 		return (colour_loop(510 + (start->z * ratio_colour) - (dif * i)));
-// 	}
-// 	return (colour_loop(510 + (start->z * ratio_colour)));
-//     // return (create_trgb(00, 255, 00, 255));
-// }
-
-// int	get_dif(int start, int end, int radius, int ratio)
-// {
-// 	int	beg;
-// 	int	fin;
-// 	int	res;
-
-// 	res = 0;
-// 	beg = my_ternery(start, end, end, start);
-// 	fin = my_ternery(start, end, start, end);
-// 	while (beg++ < fin)
-// 		res++;
-// 	res = (res * ratio) / radius;
-// 	return (res);
-// }
+	base = get_rgb(COLOUR_ZERO);
+	dif = get_colour_dif(dim, base, end_z);
+	res.r = base.r + (dif.r * end_z);
+	res.g = base.g + (dif.g * end_z);
+	res.b = base.b + (dif.b * end_z);
+	res.e_z = end_z;
+	return (res);
+}
 
 int	create_trgb(int t, int r, int g, int b)
 {
 	return (t << 24 | r << 16 | g << 8 | b);
 }
-
-// int	colour_loop(int i)
-// {
-// 	int	r;
-// 	int	g;
-// 	int	b;
-
-// 	r = 0;
-// 	g = 255;
-// 	b = 255;
-// 	while (i > 0)
-// 	{
-// 		while (g-- > 0 && i > 0)
-// 			i--;
-// 		while (r++ < 254 && i > 0)
-// 			i--;
-// 		while (b-- > 0 && i > 0)
-// 			i--;
-// 		while (g++ < 254 && i > 0)
-// 			i--;
-// 		while (b++ < 254 && i > 0)
-// 			i--;
-// 		break;
-// 	}
-// 	return (create_trgb(00, r, g, b));
-// }
-// lowest colour (0, 255, 255)
-// highest colour (255, 255, 0)
-// 4 loops low to high
-// base colour (255, 0, 255)

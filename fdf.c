@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/17 19:02:06 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/20 19:01:43 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	pixel_put(t_img *img, int x, int y, int colour)
 void	draw_line(t_img *img, t_map *start, t_map *end, t_dim dim)
 {
 	struct s_line	line;
-	t_colour		colour_i;
-	t_colour		colour;
+	t_colour		colour_s;
+	t_colour		colour_e;
 	int 			i;
 
 	i = 0;
@@ -37,12 +37,12 @@ void	draw_line(t_img *img, t_map *start, t_map *end, t_dim dim)
 	line.endx = my_ternery(end->x, line.x, 1, -1);
 	line.endy = my_ternery(end->y, line.y, 1, -1);
 	line.err = (my_ternery(line.dx, line.dy, line.dx, -line.dy) / 2);
-	dim.colour_r = rnd(get_radius(start, end));
-	colour_i = get_colour_dif(dim);
-	colour = start_colour(colour_i, start->z, end->z);
+	dim.colour_r = my_ternery(line.dx, line.dy, line.dx, line.dy);
+	colour_s = start_colour(dim, start->z);
+	colour_e = end_colour(dim, end->z);
 	while (line.x != end->x || line.y != end->y)
 	{
-		pixel_put(img, line.x, line.y, add_colour(colour, colour_i, dim, i++));
+		pixel_put(img, line.x, line.y, add_colour(colour_s, colour_e, dim, i++));
 		line.e = line.err;
 		if (line.e > -line.dx)
 		{

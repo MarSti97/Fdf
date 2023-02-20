@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 12:11:20 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/17 17:50:54 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/20 22:25:07 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int keys(int keycode, t_fdf *fdf)
 	else if (keycode == A) // spin left
 		fdf->dim.spin -= 1;
 	else if (keycode == 120) // increse z
-		fdf->dim.z_depth += 3;
-	else if (keycode == 122) // decrease z
-		fdf->dim.z_depth -= 3;
+		fdf->dim.z_depth += 1;
+	else if (keycode == 122) // decrease z this needs fixing, doesnt decrease between nodes
+		fdf->dim.z_depth -= 1;
 	else if (keycode == P || keycode == C)
 		fdf->dim = para_cent(keycode, fdf->dim);
 	else

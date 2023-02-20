@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:05:27 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/16 21:25:24 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/20 22:28:03 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void    add_dimention(t_map *map, t_dim dim)
 	end = percentage((RZ + dim.zoom), percentage(90, dim.tilt - sub));
 	i = 0;
     if (map->z > 0)
-		while (i++ < (end * map->z) + dim.z_depth)
+		while (i++ < (end * map->z) + (dim.z_depth * map->z))
             map->y--;
     else if (map->z < 0)
-		while (i++ < (end * -map->z) + dim.z_depth)
+		while (i++ < (end * -map->z) + -(dim.z_depth * map->z))
             map->y++;
 	if (dim.tilt > 90 && map->z != 0)
 		map->y += dim.tilt - 90;

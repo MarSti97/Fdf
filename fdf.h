@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/17 19:00:17 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/20 18:07:56 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@
 # define RX 35
 # define RY 35
 # define RZ 35
-# define COLOUR_START 0x009900FF
-# define COLOUR_END 0x00FFFC00
-
+# define COLOUR_ZERO 0x009900FF
+# define COLOUR_TOP 0x00FFFC00
+# define COLOUR_BOTTOM 0x0000FF09
 
 typedef struct	s_map
 {
@@ -161,7 +161,8 @@ int 	colour_loop(int i);
 // colour alt
 int add_colour(t_colour start, t_colour i, t_dim dim, int change);
 t_colour	get_rgb(int colour);
-t_colour	get_colour_dif(t_dim dim);
-t_colour	start_colour(t_colour dif, int start_z, int end_z);
+t_colour	get_colour_dif(t_dim dim, t_colour zero, int z);
+t_colour	start_colour(t_dim dim, int start_z);
+t_colour	end_colour(t_dim dim, int end_z);
 
 #endif

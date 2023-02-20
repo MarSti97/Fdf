@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 11:59:34 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/17 13:08:39 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/20 12:33:54 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ double	get_radius(t_map *start, t_map *end)
 	
 	x_len = (start->x > end->x ? start->x - end->x : end->x - start->x);
 	y_len = (start->y > end->y ? start->y - end->y : end->y - start->y);
+	// printf("%i | %i | ", x_len, y_len);
 	radius = pythag(x_len, y_len);
 	return (radius);
 }

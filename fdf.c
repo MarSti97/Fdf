@@ -6,21 +6,11 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/20 19:01:43 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/21 22:18:47 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	pixel_put(t_img *img, int x, int y, int colour)
-{
-	char	*dst;
-	
-	if (x > WIDTH || x < 0 || y < 0 || y > HEIGHT)
-		return ;
-	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
-	*(unsigned int*)dst = colour;
-}
 
 void	draw_line(t_img *img, t_map *start, t_map *end, t_dim dim)
 {
@@ -30,13 +20,7 @@ void	draw_line(t_img *img, t_map *start, t_map *end, t_dim dim)
 	int 			i;
 
 	i = 0;
-	line.x = start->x;
-	line.y = start->y;
-	line.dx = abs(end->x - line.x);
-	line.dy = abs(end->y - line.y);
-	line.endx = my_ternery(end->x, line.x, 1, -1);
-	line.endy = my_ternery(end->y, line.y, 1, -1);
-	line.err = (my_ternery(line.dx, line.dy, line.dx, -line.dy) / 2);
+	line = draw_line_two(start, end);
 	dim.colour_r = my_ternery(line.dx, line.dy, line.dx, line.dy);
 	colour_s = start_colour(dim, start->z);
 	colour_e = end_colour(dim, end->z);
@@ -55,6 +39,20 @@ void	draw_line(t_img *img, t_map *start, t_map *end, t_dim dim)
 			line.y += line.endy;
 		}
 	}
+}
+
+struct s_line	draw_line_two(t_map *start, t_map *end)
+{
+	struct s_line	line;
+	
+	line.x = start->x;
+	line.y = start->y;
+	line.dx = abs(end->x - line.x);
+	line.dy = abs(end->y - line.y);
+	line.endx = my_ternery(end->x, line.x, 1, -1);
+	line.endy = my_ternery(end->y, line.y, 1, -1);
+	line.err = (my_ternery(line.dx, line.dy, line.dx, -line.dy) / 2);
+	return (line);
 }
 
 void	draw_map(t_fdf *fdf, t_img *img)
@@ -98,15 +96,16 @@ int	main(int ac, char **av)
 		fdf->win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "Fdf");
 		img.img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
 		img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
+		fdf->img = &img;
 		fd = open(av[1], O_RDONLY);
+		if (fd <= 0)
+			error("Error: Opening file\n", fdf, 1);
 		fdf->dim = make_map(&fdf->map, fd);
 		draw_map(fdf, &img);
-		controls(fdf, &img);
+		controls(fdf);
 		mlx_loop(fdf->mlx);
 	}
 	else
 		return(0);
+	error(NULL, fdf, 0);
 }
-
-// test_rotating(&img);
-// make predefined margins later

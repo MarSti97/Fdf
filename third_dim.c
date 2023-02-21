@@ -6,58 +6,66 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 21:05:27 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/20 22:28:03 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/21 22:06:56 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void    add_dimention(t_map *map, t_dim dim)
+void    tilt_3d(t_map *map, t_dim dim)
 {
 	int end;
-	int	sub;
 	int	i;
-	// needs to fix
-	// need to see the max high and min depth to find a ratio z
-	// make a base z height, then use a percentage of of it depending on the tilt 0 - 90 max
-	sub = 0;
-	if (dim.tilt > 90)
-		sub = dim.tilt - 90; // if i wanna do 360 need to make a function do take care of all conditions
-	end = percentage((RZ + dim.zoom), percentage(90, dim.tilt - sub));
+
+	end = percent((dim.r_z + dim.zoom), percent(90, dim.tilt));
 	i = 0;
-    if (map->z > 0)
+	if (dim.tilt <= 270 && map->z > 0)
 		while (i++ < (end * map->z) + (dim.z_depth * map->z))
-            map->y--;
-    else if (map->z < 0)
+			map->y--;
+	else if (dim.tilt <= 270 && map->z < 0)
 		while (i++ < (end * -map->z) + -(dim.z_depth * map->z))
-            map->y++;
-	if (dim.tilt > 90 && map->z != 0)
-		map->y += dim.tilt - 90;
+			map->y++;
+	end = percent((dim.r_z + dim.zoom), percent(90, 90 - (dim.tilt - 90)));
+	if (dim.tilt > 90 && dim.tilt <= 270 && map->z > 0)
+		while (i-- > (end * map->z) + (dim.z_depth * map->z))
+			map->y++;
+	else if (dim.tilt > 90 && dim.tilt <= 270 && map->z < 0)
+		while (i-- > (end * -map->z) + -(dim.z_depth * map->z))
+			map->y--;	
+	end = percent((dim.r_z + dim.zoom), percent(90, (360 - dim.tilt)));
+	if (dim.tilt > 270 && map->z > 0)
+		while (i++ < (end * map->z) + (dim.z_depth * map->z))
+			map->y++;
+	else if (dim.tilt > 270 && map->z < 0)
+		while (i++ < (end * -map->z) + -(dim.z_depth * map->z))
+			map->y--;
 }
 
-
-// write a colour ratio thing depending on the differnece in map-z
-// int add_colour(t_map *start, t_map *end, int radius, int i)
+// void    spin_3d(t_map *map, t_dim dim)
 // {
-// 	int dif;
-// 	int r;
-// 	int g;
-// 	int b;
-    
-// 	r = 153 + (8 * start->z);
-// 	g = 00 + (8 * start->z);
-// 	b = 255 - (8 * start->z); 
-//     if (start->z < end->z)
-// 	{
-// 		dif = (end->z * 8) / radius;
-// 		return (create_trgb(00, r + (dif * i), g + (dif * i), b - (dif * i)));
-// 	}
-// 	if (start->z > end->z)
-// 	{
-// 		dif = rnd((((double)start->z * 8) / (double)radius) * (double)i);
-// 		return (create_trgb(00, r - dif, g - dif, b + dif ));
-// 	}
-// 	if (start->z == end->z)
-// 		return (create_trgb(00, r, g, b));
-// 	return (create_trgb(00, 153, 100, 255));
-// } // grb = 00,153,00,255
+// 	int end;
+// 	int	i;
+
+// 	end = percentage((dim.r_z + dim.zoom), percentage(90, dim.spin));
+// 	i = 0;
+// 	if (dim.spin <= 270 && map->z > 0)
+// 		while (i++ < (end * map->z) + (map->z))
+// 			map->x++;
+// 	else if (dim.spin <= 270 && map->z < 0)
+// 		while (i++ < (end * -map->z) + -(map->z))
+// 			map->x--;
+// 	end = percentage((dim.r_z + dim.zoom), percentage(90, 90 - (dim.spin - 90)));
+// 	if (dim.spin > 90 && dim.spin <= 270 && map->z > 0)
+// 		while (i-- > (end * map->z) + (map->z))
+// 			map->x--;
+// 	else if (dim.spin > 90 && dim.spin <= 270 && map->z < 0)
+// 		while (i-- > (end * -map->z) + -(map->z))
+// 			map->x++;	
+// 	end = percentage((dim.r_z + dim.zoom), percentage(90, (360 - dim.spin)));
+// 	if (dim.spin > 270 && map->z > 0)
+// 		while (i++ < (end * map->z) + (map->z))
+// 			map->x--;
+// 	else if (dim.spin > 270 && map->z < 0)
+// 		while (i++ < (end * -map->z) + -(map->z))
+// 			map->x++;
+// }

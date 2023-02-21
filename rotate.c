@@ -6,24 +6,11 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 11:59:34 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/20 12:33:54 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/21 22:28:48 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-double	get_radius(t_map *start, t_map *end)
-{
-	int x_len;
-	int y_len;
-	double radius;
-	
-	x_len = (start->x > end->x ? start->x - end->x : end->x - start->x);
-	y_len = (start->y > end->y ? start->y - end->y : end->y - start->y);
-	// printf("%i | %i | ", x_len, y_len);
-	radius = pythag(x_len, y_len);
-	return (radius);
-}
 
 int make_grid_coord(int y, int arg, int height)
 {
@@ -67,20 +54,16 @@ void tilt(t_map *map, double degree, t_dim dim)
 	res_y = rnd((map->y * cos(THETA * degree)));
 	res_y = make_grid_coord(res_y, 0, dim.cntry);
 	map->y = res_y;
+	tilt_3d(map, dim);
 }
 
-void spin(t_map *map, double degree, t_dim dim)
-{
-	double res_x;
-	double res_y;
+// void spin(t_map *map, double degree, t_dim dim)
+// {
+// 	double res_x;
 	
-	map->x = map->x - (dim.cntrx);
-	map->y = make_grid_coord(map->y, 1, dim.cntry);
-	res_x = rnd((map->x * cos(THETA * degree)) + (map->y * sin(THETA * degree)));
-	res_y = rnd((map->x * sin(THETA * degree)) + (map->y * cos(THETA * degree)));
-	// res_x = rnd((map->x * cos(THETA * degree)));
-	res_x = res_x + (dim.cntrx);
-	map->x = res_x;
-	res_y = make_grid_coord(res_y, 0, dim.cntry);
-	map->y = res_y;
-}
+// 	map->x = map->x - (dim.cntrx);
+// 	res_x = rnd((map->x * cos(THETA * degree)));
+// 	res_x = res_x + (dim.cntrx);
+// 	map->x = res_x;
+// 	spin_3d(map, dim);
+// }

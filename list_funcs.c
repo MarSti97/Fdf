@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:12:46 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/12 20:42:05 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/21 21:09:18 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,24 @@ void	ft_listadd_back(t_map **lst, t_map *new)
 	// new->prev = temp;
 }
 
-void	error(t_map *lst)
+void	free_list(t_map *lst)
 {
 	t_map	*temp;
+	t_map	*down;
 
-	if (lst)
+	down = lst;
+	while (lst)
 	{
-		// write(1, "Memory error\n", 13);
-		while (lst != NULL)
+		lst = down;
+		if (lst->down)
+			down = lst->down;
+		while (lst)
 		{
 			temp = lst;
 			lst = lst->next;
-			free (temp);
+			free (temp);	
 		}
 	}
-	exit(1);
 }
 
 t_map	*ft_listlast(t_map *lst)

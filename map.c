@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:33:39 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/22 17:32:08 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 22:23:21 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,8 @@ t_dim	get_dimensions(t_map **map)
 	dim.cntry = HEIGHT / 2;
 	dim.z_max = get_z_max(*map);
 	dim.z_min = get_z_min(*map);
-	dim.r_xy = WIDTH / (dim.cmax + dim.z_max);
-	dim.r_z = dim.r_xy / 4;
+	dim.r_xy = ((WIDTH + HEIGHT) / 2) / (dim.cmax);
+	dim.r_z = prcnt(dim.r_xy, 25);
 	dim.d = 0;
 	dim.rotate = -32;
 	dim.tilt = 58;

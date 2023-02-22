@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 22:20:52 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/22 17:34:36 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 21:45:16 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,14 @@ int	zoom(int button, int x, int y, t_fdf *fdf)
 	if (button == 4)
 	{
 		fdf->dim.r_xy += 1;
-		fdf->dim.r_z = rnd((double)fdf->dim.r_xy / 4);
+		fdf->dim.r_z = prcnt(fdf->dim.r_xy, 25);
+;
 	}
 	else if (button == 5 && fdf->dim.r_xy > 1)
 	{
 		fdf->dim.r_xy -= 1;
-		fdf->dim.r_z = rnd((double)fdf->dim.r_xy / 4);
+		fdf->dim.r_z = prcnt(fdf->dim.r_xy, 25);
+
 	}
 	give_coords(fdf->map, fdf->dim);
 	draw_map(fdf);

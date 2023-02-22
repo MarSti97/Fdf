@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:43 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/22 17:33:10 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 21:19:11 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
-# include "mlx.h"
+# include "./mlx_linux/mlx.h"
 # include "./libft/libft.h"
 
 # define WIDTH 1800

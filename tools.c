@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/16 17:17:01 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/21 22:27:08 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 16:53:35 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,26 @@ int	my_ternery(int a, int b, int yes, int no)
 void	error(char *str, t_fdf *fdf, int arg)
 {
 	free_list(fdf->map);
-	if (fdf->mlx && fdf->win)
-		mlx_destroy_window(fdf->mlx, fdf->win);
-	if (fdf->mlx && fdf->img)
-		mlx_destroy_image(fdf->mlx, fdf->img);
 	if (arg == 1)
 		ft_putendl_fd(str, 2);
 	free (fdf);
 	exit(arg);
 }
 
-void	pixel_put(t_img *img, int x, int y, int colour)
+void	free_data(char **data)
 {
-	char	*dst;
-	
-	if (x > WIDTH || x < 0 || y < 0 || y > HEIGHT)
-		return ;
-	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
-	*(unsigned int*)dst = colour;
+	int	i;
+
+	i = 0;
+	while (data[i])
+	{
+		free (data[i]);
+		i++;
+	}
+	free (data);
 }
 
-int get_z_max(t_map *map)
+int	get_z_max(t_map *map)
 {
 	t_map	*temp;
 	int		max;
@@ -59,7 +58,7 @@ int get_z_max(t_map *map)
 	return (max);
 }
 
-int get_z_min(t_map *map)
+int	get_z_min(t_map *map)
 {
 	t_map	*temp;
 	int		min;

@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 13:29:21 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/21 22:18:47 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 12:58:03 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,18 @@
 void	draw_line(t_img *img, t_map *start, t_map *end, t_dim dim)
 {
 	struct s_line	line;
-	t_colour		colour_s;
-	t_colour		colour_e;
-	int 			i;
+	t_colour		col_s;
+	t_colour		col_e;
+	int				i;
 
 	i = 0;
 	line = draw_line_two(start, end);
-	dim.colour_r = my_ternery(line.dx, line.dy, line.dx, line.dy);
-	colour_s = start_colour(dim, start->z);
-	colour_e = end_colour(dim, end->z);
+	dim.rad = my_ternery(line.dx, line.dy, line.dx, line.dy);
+	col_s = start_colour(dim, start->z);
+	col_e = end_colour(dim, end->z);
 	while (line.x != end->x || line.y != end->y)
 	{
-		pixel_put(img, line.x, line.y, add_colour(colour_s, colour_e, dim, i++));
+		pixel_put(img, line.x, line.y, add_colour(col_s, col_e, dim, i++));
 		line.e = line.err;
 		if (line.e > -line.dx)
 		{
@@ -44,7 +44,7 @@ void	draw_line(t_img *img, t_map *start, t_map *end, t_dim dim)
 struct s_line	draw_line_two(t_map *start, t_map *end)
 {
 	struct s_line	line;
-	
+
 	line.x = start->x;
 	line.y = start->y;
 	line.dx = abs(end->x - line.x);
@@ -55,20 +55,20 @@ struct s_line	draw_line_two(t_map *start, t_map *end)
 	return (line);
 }
 
-void	draw_map(t_fdf *fdf, t_img *img)
+void	draw_map(t_fdf *fdf)
 {
 	t_map	*temp;
 	t_map	*map_sub;
-	
+
 	map_sub = fdf->map;
 	temp = map_sub->down;
-	ft_bzero(img->addr, sizeof(img->bpp) * HEIGHT * WIDTH);
+	ft_bzero(fdf->img->addr, sizeof(fdf->img->bpp) * HEIGHT * WIDTH);
 	while (map_sub->next || map_sub->down)
 	{
 		if (map_sub->next)
-			draw_line(img, map_sub, map_sub->next, fdf->dim);
+			draw_line(fdf->img, map_sub, map_sub->next, fdf->dim);
 		if (map_sub->down)
-			draw_line(img, map_sub, map_sub->down, fdf->dim);
+			draw_line(fdf->img, map_sub, map_sub->down, fdf->dim);
 		if (map_sub->next)
 			map_sub = map_sub->next;
 		else if (map_sub->down)
@@ -77,35 +77,30 @@ void	draw_map(t_fdf *fdf, t_img *img)
 			temp = temp->down;
 		}
 	}
-	mlx_put_image_to_window(fdf->mlx, fdf->win, img->img, 0, 0);
+	mlx_put_image_to_window(fdf->mlx, fdf->win, fdf->img->img, 0, 0);
 }
 
 int	main(int ac, char **av)
 {
-	int fd;
 	t_img	img;
 	t_fdf	*fdf;
-    
+
 	if (ac == 2)
 	{
 		fdf = (t_fdf *)malloc(sizeof(t_fdf));
 		if (!fdf)
-			return (0);
+			exit (1);
 		fdf->map = NULL;
 		fdf->mlx = mlx_init();
 		fdf->win = mlx_new_window(fdf->mlx, WIDTH, HEIGHT, "Fdf");
 		img.img = mlx_new_image(fdf->mlx, WIDTH, HEIGHT);
-		img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
+		img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.len, &img.edn);
 		fdf->img = &img;
-		fd = open(av[1], O_RDONLY);
-		if (fd <= 0)
-			error("Error: Opening file\n", fdf, 1);
-		fdf->dim = make_map(&fdf->map, fd);
-		draw_map(fdf, &img);
+		make_map(&fdf, av[1]);
+		draw_map(fdf);
 		controls(fdf);
 		mlx_loop(fdf->mlx);
 	}
 	else
-		return(0);
-	error(NULL, fdf, 0);
+		return (0);
 }

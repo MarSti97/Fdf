@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 12:16:08 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/08 15:56:36 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 13:22:09 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		ft_putnbr_fd(int nb, int fd);
 // GNL
 char	*get_next_line(int fd);
 // ft_printf
-int	ft_printf(const char *input, ...);
+int		ft_printf(const char *input, ...);
 
 // Bonus
 typedef struct s_list

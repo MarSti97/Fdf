@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 12:03:10 by mstiedl           #+#    #+#             */
-/*   Updated: 2022/11/15 18:25:33 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 16:43:21 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static int	check_end(char const *str, char const *set)
 	int		i2;
 	size_t	res;
 
+	i = 0;
 	i = ft_strlen(str) - 1;
 	res = 0;
 	while (i > 0)

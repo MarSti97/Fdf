@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/06 10:12:46 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/21 21:09:18 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 12:59:00 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	ft_listadd_back(t_map **lst, t_map *new)
 	}
 	temp = ft_listlast(*lst);
 	temp->next = new;
-	// new->prev = temp;
 }
 
 void	free_list(t_map *lst)
@@ -43,7 +42,7 @@ void	free_list(t_map *lst)
 		{
 			temp = lst;
 			lst = lst->next;
-			free (temp);	
+			free (temp);
 		}
 	}
 }

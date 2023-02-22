@@ -6,31 +6,42 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 22:20:52 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/21 22:24:41 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 17:34:36 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int close_x()
-{
-	exit (0);
-	return (0);
-}
-
 t_dim	do_tilt(int keycode, t_dim dim)
 {
-	if (keycode == W) 	// tilt up
+	if (keycode == W)
 	{
 		if (dim.tilt == 360)
 			dim.tilt = 0;
 		dim.tilt += 1;
 	}
-	else if (keycode == S) // tilt down
+	else if (keycode == S)
 	{
 		if (dim.tilt == 0)
 			dim.tilt = 360;
 		dim.tilt -= 1;
+	}
+	return (dim);
+}
+
+t_dim	do_spin(int keycode, t_dim dim)
+{
+	if (keycode == D)
+	{
+		if (dim.spin == 360)
+			dim.spin = 0;
+		dim.spin += 1;
+	}
+	else if (keycode == A)
+	{
+		if (dim.spin == 0)
+			dim.spin = 360;
+		dim.spin -= 1;
 	}
 	return (dim);
 }
@@ -42,6 +53,7 @@ t_dim	para_cent(int keycode, t_dim dim)
 		dim.spin = 0;
 		dim.tilt = 0;
 		dim.rotate = 0;
+		dim.d = 0;
 	}
 	else if (keycode == C)
 	{
@@ -64,21 +76,21 @@ t_dim	translate(int keycode, t_dim dim)
 	return (dim);
 }
 
-int zoom(int button, int x, int y, t_fdf *fdf)
+int	zoom(int button, int x, int y, t_fdf *fdf)
 {	
 	(void)x;
 	(void)y;
 	if (button == 4)
 	{
 		fdf->dim.r_xy += 1;
-		fdf->dim.zoom += 1;
+		fdf->dim.r_z = rnd((double)fdf->dim.r_xy / 4);
 	}
 	else if (button == 5 && fdf->dim.r_xy > 1)
 	{
 		fdf->dim.r_xy -= 1;
-		fdf->dim.zoom -= 1;
+		fdf->dim.r_z = rnd((double)fdf->dim.r_xy / 4);
 	}
 	give_coords(fdf->map, fdf->dim);
-	draw_map(fdf, fdf->img);
+	draw_map(fdf);
 	return (0);
 }

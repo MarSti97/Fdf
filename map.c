@@ -6,32 +6,34 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/05 17:33:39 by mstiedl           #+#    #+#             */
-/*   Updated: 2023/02/21 21:11:53 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 17:32:08 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_dim	make_map(t_map **map, int fd)
+void	make_map(t_fdf **fdf, char *file)
 {
 	char	*line;
 	char	**data;
-	t_dim	dim;
+	int		fd;
 
+	fd = open(file, O_RDONLY);
+	if (fd <= 0)
+		error("Error: Opening file\n", *fdf, 1);
 	while (fd)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			break ;
 		data = ft_split(line, ' ');
-		add_data(map, data);
+		add_data(&(*fdf)->map, data);
+		free_data(data);
 		free (line);
-		free (data);
 	}
-	dim = get_dimensions(map);
-	linked_grid(*map);
-	give_coords(*map, dim);
-	return (dim);
+	(*fdf)->dim = get_dimensions(&(*fdf)->map);
+	linked_grid((*fdf)->map);
+	give_coords((*fdf)->map, (*fdf)->dim);
 }
 
 void	linked_grid(t_map *map)
@@ -80,27 +82,27 @@ void	add_data(t_map **map, char **data)
 
 void	give_coords(t_map *map, t_dim dim)
 {
-	t_map	*map_sub;
+	t_map	*sub;
 	t_map	*temp;
 	int		x;
 	int		y;
 
 	y = 0;
-	map_sub = map;
-	while (map_sub)
+	sub = map;
+	while (sub)
 	{
 		x = 0;
-		temp = map_sub->down;
-		while (map_sub)
+		temp = sub->down;
+		while (sub)
 		{
-			map_sub->x = dim.cntrx - (dim.r_xy * (dim.cmax / 2)) + (dim.r_xy * x++);
-			map_sub->y = dim.cntry - (dim.r_xy * (dim.rmax / 2)) + (dim.r_xy * y);
-			rotate_coord(map_sub, dim.rotate, dim);
-			tilt(map_sub, dim.tilt, dim);
-			// spin(map_sub, dim.spin, dim);
-			map_sub = map_sub->next;
+			sub->x = dim.cntrx - (dim.r_xy * (dim.cmax / 2)) + (dim.r_xy * x++);
+			sub->y = dim.cntry - (dim.r_xy * (dim.rmax / 2)) + (dim.r_xy * y);
+			rotate_coord(sub, dim.rotate, dim);
+			tilt(sub, dim.tilt, dim);
+			spin(sub, dim.spin, dim);
+			sub = sub->next;
 		}
-		map_sub = temp;
+		sub = temp;
 		y++;
 	}
 }
@@ -118,9 +120,8 @@ t_dim	get_dimensions(t_map **map)
 	dim.z_max = get_z_max(*map);
 	dim.z_min = get_z_min(*map);
 	dim.r_xy = WIDTH / (dim.cmax + dim.z_max);
-	dim.r_z = dim.r_xy;
-	dim.zoom = 0;
-	dim.z_depth = 0;
+	dim.r_z = dim.r_xy / 4;
+	dim.d = 0;
 	dim.rotate = -32;
 	dim.tilt = 58;
 	dim.spin = 0;

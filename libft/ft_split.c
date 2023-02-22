@@ -6,7 +6,7 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 09:30:55 by mstiedl           #+#    #+#             */
-/*   Updated: 2022/11/15 18:16:50 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 16:48:44 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,25 +71,25 @@ char	**ft_split(char const *str, char c)
 	if (!ptr)
 		return (NULL);
 	res = (char **)malloc(sizeof(char *) * (words + 1));
-	mem_all(ptr, c, res);
 	if (!res)
 		return (NULL);
+	mem_all(ptr, c, res);
 	res[words] = NULL;
 	free (ptr);
 	return (res);
 }
 
-/* int main()
-{
-    char const str[] = "tripouille";
-    char c = 0;
-	char **res = ft_split(str, c);
-	
-	printf("%i\n", counter(str, c));
-	printf("Result word 1: %s\n", res[0]);
-	printf("Result word 2: %s\n", res[1]);
-	printf("Result word 3: %s\n", res[2]);
-	printf("Result word 4: %s\n", res[3]);
-	printf("Result word 5: %s\n", res[4]);
-	printf("Result word NULL: %s\n", res[5]);
-} */
+// int main()
+// {
+//     char const str[] = "0 1 2 3 4 ";
+//     char c = ' ';
+// 	char **res = ft_split(str, c);
+// 	printf("%i\n", counter(str, c));
+// 	printf("Result word 1: %s$\n", res[0]);
+// 	printf("Result word 2: %s$\n", res[1]);
+// 	printf("Result word 3: %s$\n", res[2]);
+// 	printf("Result word 4: %s$\n", res[3]);
+// 	printf("Result word 5: %s$\n", res[4]);
+// 	printf("Result word NULL: %s$\n", res[5]);
+// 	free_data(res);
+// }

@@ -6,16 +6,16 @@
 /*   By: mstiedl <mstiedl@student.42lisboa.com>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/16 15:56:55 by mstiedl           #+#    #+#             */
-/*   Updated: 2022/12/29 12:33:21 by mstiedl          ###   ########.fr       */
+/*   Updated: 2023/02/22 13:20:59 by mstiedl          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 static int	ft_placeholder(char c, va_list args, int len);
-int	ft_voidptr(unsigned long int arg, char *base);
-int	ft_putunsigned(unsigned int nb);
-int	ft_puthex(unsigned int nb, char *base);
+int			ft_voidptr(unsigned long int arg, char *base);
+int			ft_putunsigned(unsigned int nb);
+int			ft_puthex(unsigned int nb, char *base);
 
 int	ft_printf(const char *input, ...)
 {

@@ -21,8 +21,8 @@
 # include "./mlx_linux/mlx.h"
 # include "./libft/libft.h"
 
-# define WIDTH 1800
-# define HEIGHT 900
+# define WIDTH 2200
+# define HEIGHT 1500
 # define ESC 65307
 # define Q 113
 # define W 119

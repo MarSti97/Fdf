@@ -72,8 +72,6 @@ void	add_data(t_fdf **fdf, char **data)
 		return ;
 	while (data[i])
 	{
-		// if (ft_strncmp("\n", data[i], 1) == 0)
-		// 	break;
 		node = (t_map *)malloc(sizeof(t_map));
 		if (!node)
 			free_list((*fdf)->map);

@@ -18,18 +18,18 @@ all : $(NAME)
 	@$(CC) $(FLAGS) -I/usr/include -Imlx_linux -O3 -c $< -o $@
 
 $(NAME): $(OBJ)
-# @$(LIBFT)
-	@$(CC) -fsanitize=address $(OBJ) -Llibft -lft -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -g -o $(NAME)
+	@$(LIBFT)
+	@$(CC) $(OBJ) -Llibft -lft -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -g -fPIE -o $(NAME)
 	@echo "$(GREEN)>>>> Compiled <<<<$(END)"
 
 clean :
 	@$(RM) $(OBJ)
-# @make clean -C ./libft --no-print-directory
+	@make clean -C ./libft --no-print-directory
 	@echo "$(RED)>>>> Cleaned <<<<$(END)"
 
 fclean : clean 
 	@$(RM) $(NAME)
-# @make fclean -C ./libft --no-print-directory
+	@make fclean -C ./libft --no-print-directory
 	@echo "$(RED)>>>> All <<<<$(END)"
 
 re : fclean all

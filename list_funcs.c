@@ -32,19 +32,22 @@ void	free_list(t_map *lst)
 	t_map	*temp;
 	t_map	*down;
 
-	down = lst;
 	while (lst)
 	{
-		lst = down;
 		if (lst->down)
 			down = lst->down;
+		else
+			down = NULL;
 		while (lst)
 		{
 			temp = lst;
 			lst = lst->next;
 			free (temp);
 		}
+		if (down)
+			lst = down;
 	}
+	exit (0);
 }
 
 t_map	*ft_listlast(t_map *lst)

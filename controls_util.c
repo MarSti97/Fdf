@@ -84,13 +84,11 @@ int	zoom(int button, int x, int y, t_fdf *fdf)
 	{
 		fdf->dim.r_xy += 1;
 		fdf->dim.r_z = prcnt(fdf->dim.r_xy, 25);
-;
 	}
 	else if (button == 5 && fdf->dim.r_xy > 1)
 	{
 		fdf->dim.r_xy -= 1;
 		fdf->dim.r_z = prcnt(fdf->dim.r_xy, 25);
-
 	}
 	give_coords(fdf->map, fdf->dim);
 	draw_map(fdf);

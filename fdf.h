@@ -124,7 +124,7 @@ t_map			*ft_listlast(t_map *lst);
 void			free_list(t_map *lst);
 // map.c
 void			make_map(t_fdf **fdf, char *file);
-void			add_data(t_map **map, char **data);
+void			add_data(t_fdf **fdf, char **data);
 t_dim			get_dimensions(t_map **map);
 void			linked_grid(t_map *map);
 void			give_coords(t_map *map, t_dim dim);
@@ -155,7 +155,7 @@ t_dim			do_spin(int keycode, t_dim dim);
 int				my_ternery(int a, int b, int yes, int no);
 int				get_z_max(t_map *map);
 int				get_z_min(t_map *map);
-void			error(char *str, t_fdf *fdf, int arg);
+void			error(char *str, t_fdf **fdf, int arg);
 void			free_data(char **data);
 // colour
 t_colour		get_colour_dif(t_dim dim, t_colour zero, int z);

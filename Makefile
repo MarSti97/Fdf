@@ -2,7 +2,7 @@ SRC = fdf.c list_funcs.c map.c rotate.c third_dim.c math.c controls.c controls_u
 colour.c colour_utils.c tools.c
 OBJ = $(SRC:.c=.o)
 NAME = fdf
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -g 
 LIBFT = make -C ./libft --no-print-directory
 RM = rm -f
 CC = cc
@@ -19,7 +19,7 @@ all : $(NAME)
 
 $(NAME): $(OBJ)
 # @$(LIBFT)
-	@$(CC) $(OBJ) -Llibft -lft -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -g -o $(NAME)
+	@$(CC) -fsanitize=address $(OBJ) -Llibft -lft -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz -g -o $(NAME)
 	@echo "$(GREEN)>>>> Compiled <<<<$(END)"
 
 clean :

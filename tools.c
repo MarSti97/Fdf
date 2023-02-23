@@ -20,25 +20,21 @@ int	my_ternery(int a, int b, int yes, int no)
 		return (no);
 }
 
-void	error(char *str, t_fdf *fdf, int arg)
+void	error(char *str, t_fdf **fdf, int arg)
 {
-	free_list(fdf->map);
+	free_list((*fdf)->map);
 	if (arg == 1)
 		ft_putendl_fd(str, 2);
-	free (fdf);
 	exit(arg);
 }
 
 void	free_data(char **data)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (data[i])
-	{
-		free (data[i]);
-		i++;
-	}
+		free (data[i++]);
 	free (data);
 }
 

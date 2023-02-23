@@ -20,14 +20,16 @@ void	make_map(t_fdf **fdf, char *file)
 
 	fd = open(file, O_RDONLY);
 	if (fd <= 0)
-		error("Error: Opening file\n", *fdf, 1);
+		error("Error: Opening file\n", fdf, 1);
 	while (fd)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			break ;
 		data = ft_split(line, ' ');
-		add_data(&(*fdf)->map, data);
+		if (!data)
+			error("Error: Reading file\n", fdf, 1);
+		add_data(fdf, data);
 		free_data(data);
 		free (line);
 	}
@@ -56,7 +58,7 @@ void	linked_grid(t_map *map)
 	}
 }
 
-void	add_data(t_map **map, char **data)
+void	add_data(t_fdf **fdf, char **data)
 {
 	t_map		*node;
 	static int	row;
@@ -66,17 +68,21 @@ void	add_data(t_map **map, char **data)
 	row++;
 	i = 0;
 	col = 1;
+	if (!data)
+		return ;
 	while (data[i])
 	{
+		// if (ft_strncmp("\n", data[i], 1) == 0)
+		// 	break;
 		node = (t_map *)malloc(sizeof(t_map));
 		if (!node)
-			free_list(*map);
+			free_list((*fdf)->map);
 		node->row = row;
 		node->col = col++;
 		node->z = ft_atoi(data[i++]);
 		node->next = NULL;
 		node->down = NULL;
-		ft_listadd_back(map, node);
+		ft_listadd_back(&(*fdf)->map, node);
 	}
 }
 

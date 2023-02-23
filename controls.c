@@ -21,14 +21,14 @@ void	controls(t_fdf *fdf)
 
 int	close_x(t_fdf *fdf)
 {
-	error(NULL, fdf, 0);
+	error(NULL, &fdf, 0);
 	return (0);
 }
 
 int	keys(int keycode, t_fdf *fdf)
 {
 	if (keycode == ESC)
-		error(NULL, fdf, 0);
+		error(NULL, &fdf, 0);
 	if (keycode == E)
 		fdf->dim.rotate -= 1;
 	else if (keycode == Q)
